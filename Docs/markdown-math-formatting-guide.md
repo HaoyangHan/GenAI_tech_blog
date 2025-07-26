@@ -93,11 +93,26 @@ $$
 | Cost | $240,000 | `800 × $300` |
 ```
 
-### ⚠️ Table Formatting Rules
-- **Never use HTML spans inside table cells** - causes rendering conflicts
+### ⚠️ Critical Table Formatting Rules
+- **NEVER put calculations inside table cells** - causes LaTeX parsing conflicts
+- **NEVER use HTML spans inside table cells** - causes rendering conflicts  
+- **NEVER use parentheses with calculations in cells** - triggers math renderer
 - **Keep calculations outside tables** - use calculation details after the table
 - **Use simple markdown formatting only** - bold (`**text**`) and code (`` `text` ``)
 - **Move colored text outside tables** - use callouts or highlights after tables
+
+### Example of What NOT To Do ❌
+```markdown
+| Cost | $240,000 | $84,000 (`280 × $300`) | -$156,000 |
+```
+
+### Example of What TO Do ✅  
+```markdown
+| Cost | $240,000 | $84,000 | -$156,000 |
+
+**Calculation Details:**
+- New cost: `280 × $300 = $84,000`
+```
 
 ## 6. Best Practices
 
