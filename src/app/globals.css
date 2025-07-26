@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import 'highlight.js/styles/atom-one-dark.css';
+@import 'katex/dist/katex.min.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -147,5 +148,85 @@
   
   .prose-custom li {
     @apply mb-1;
+  }
+  
+  /* Enhanced LaTeX/Math equation styling */
+  .prose-custom .math-display {
+    @apply my-6 mx-auto;
+    text-align: center;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  
+  .prose-custom .math-display .katex-display {
+    margin: 0 !important;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .prose-custom .math-inline {
+    @apply inline-block;
+    vertical-align: baseline;
+    padding: 0.1rem 0.2rem;
+    margin: 0 0.1rem;
+    background: rgba(99, 102, 241, 0.05);
+    border-radius: 3px;
+    border: 1px solid rgba(99, 102, 241, 0.1);
+  }
+  
+  .prose-custom .math-inline .katex {
+    font-size: 1em !important;
+  }
+  
+  .prose-custom .math-error {
+    @apply bg-red-50 text-red-700 px-2 py-1 rounded border border-red-200;
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+  }
+  
+  /* Enhanced KaTeX styling */
+  .prose-custom .katex {
+    font-size: 1.1em;
+  }
+  
+  .prose-custom .katex-display {
+    font-size: 1.2em;
+  }
+  
+  /* Responsive math equations */
+  @media (max-width: 640px) {
+    .prose-custom .math-display {
+      @apply mx-2;
+    }
+    
+    .prose-custom .math-display .katex-display {
+      padding: 0.75rem;
+      font-size: 1em;
+    }
+    
+    .prose-custom .katex-display {
+      font-size: 1em !important;
+    }
+  }
+  
+  /* Dark mode math styling */
+  @media (prefers-color-scheme: dark) {
+    .prose-custom .math-display .katex-display {
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      border-color: #475569;
+      color: #e2e8f0;
+    }
+    
+    .prose-custom .math-inline {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+    
+    .prose-custom .math-error {
+      @apply bg-red-900 text-red-200 border-red-700;
+    }
   }
 } 

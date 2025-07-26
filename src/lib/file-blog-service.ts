@@ -3,6 +3,7 @@ import { formatDate } from './utils';
 import matter from 'gray-matter';
 import { marked } from 'marked';
 import hljs from 'highlight.js';
+import katex from 'katex';
 import fs from 'fs';
 import path from 'path';
 
@@ -93,10 +94,13 @@ export class FileBlogService {
   }
 
   /**
-   * Convert markdown content to HTML with enhanced Python syntax highlighting
+   * Convert markdown content to HTML with enhanced Python syntax highlighting and LaTeX math support
    */
   static async markdownToHtml(markdown: string): Promise<string> {
     try {
+      // First, process LaTeX equations
+      let processedMarkdown = this.processLaTeXEquations(markdown);
+      
       // Create a custom renderer for code blocks
       const renderer = new marked.Renderer();
       
@@ -132,9 +136,51 @@ export class FileBlogService {
         return `<pre><code class="hljs language-${lang}">${highlightedCode}</code></pre>`;
       };
 
-      return await marked(markdown, { renderer });
+      return await marked(processedMarkdown, { renderer });
     } catch (error) {
       console.error('Error converting markdown:', error);
+      return markdown;
+    }
+  }
+
+  /**
+   * Process LaTeX equations in markdown content
+   */
+  private static processLaTeXEquations(markdown: string): string {
+    try {
+      // Process display math ($$...$$)
+      markdown = markdown.replace(/\$\$([\s\S]*?)\$\$/g, (match, equation) => {
+        try {
+          const renderedMath = katex.renderToString(equation.trim(), {
+            displayMode: true,
+            throwOnError: false,
+            strict: false
+          });
+          return `<div class="math-display">${renderedMath}</div>`;
+        } catch (err) {
+          console.warn('LaTeX display math rendering failed:', err);
+          return `<div class="math-error">$$${equation}$$</div>`;
+        }
+      });
+
+      // Process inline math ($...$) - but not in code blocks
+      markdown = markdown.replace(/(?<!`)(\$)(?!\$)((?:[^$`]|`[^`]*`)*?)\1(?!`)/g, (match, _, equation) => {
+        try {
+          const renderedMath = katex.renderToString(equation.trim(), {
+            displayMode: false,
+            throwOnError: false,
+            strict: false
+          });
+          return `<span class="math-inline">${renderedMath}</span>`;
+        } catch (err) {
+          console.warn('LaTeX inline math rendering failed:', err);
+          return `<span class="math-error">$${equation}$</span>`;
+        }
+      });
+
+      return markdown;
+    } catch (error) {
+      console.error('Error processing LaTeX equations:', error);
       return markdown;
     }
   }
