@@ -50,10 +50,13 @@ export class FileBlogService {
           const date = data.date ? new Date(data.date) : new Date();
           const summary = data.summary || this.extractSummary(content);
           
+          // Process markdown content to HTML with LaTeX support
+          const htmlContent = await this.markdownToHtml(content);
+          
           return {
             id: slug,
             title,
-            content,
+            content: htmlContent,
             category: category as BlogCategory,
             date,
             slug,
@@ -86,11 +89,16 @@ export class FileBlogService {
   }
 
   /**
-   * Get a single post by slug
+   * Get a single blog post by slug
    */
   static async getPostBySlug(slug: string): Promise<BlogPost | null> {
-    const posts = await this.getAllPosts();
-    return posts.find(post => post.slug === slug) || null;
+    try {
+      const posts = await this.getAllPosts();
+      return posts.find(post => post.slug === slug) || null;
+    } catch (error) {
+      console.error('Error getting post by slug:', slug, error);
+      return null;
+    }
   }
 
   /**
@@ -148,39 +156,83 @@ export class FileBlogService {
    */
   private static processLaTeXEquations(markdown: string): string {
     try {
-      // Process display math ($$...$$)
-      markdown = markdown.replace(/\$\$([\s\S]*?)\$\$/g, (match, equation) => {
+      // Normalize line endings first (convert \r\n to \n and handle other variations)
+      let processedMarkdown = markdown
+        .replace(/\r\n/g, '\n')  // Windows CRLF -> LF
+        .replace(/\r/g, '\n')    // Old Mac CR -> LF
+        .replace(/\u2028/g, '\n') // Unicode line separator
+        .replace(/\u2029/g, '\n'); // Unicode paragraph separator
+      
+      // Process display math ($$...$$) with improved regex and error handling
+      let displayMathCount = 0;
+      processedMarkdown = processedMarkdown.replace(/\$\$\s*([\s\S]*?)\s*\$\$/g, (match, equation) => {
+        displayMathCount++;
         try {
-          const renderedMath = katex.renderToString(equation.trim(), {
+          const cleanEquation = equation.trim();
+          if (!cleanEquation) {
+            return match;
+          }
+          
+          const renderedMath = katex.renderToString(cleanEquation, {
             displayMode: true,
             throwOnError: false,
-            strict: false
+            strict: false,
+            trust: true,
+            output: 'html'
           });
+          
           return `<div class="math-display">${renderedMath}</div>`;
         } catch (err) {
           console.warn('LaTeX display math rendering failed:', err);
-          return `<div class="math-error">$$${equation}$$</div>`;
+          return `<div class="math-error">Display Math Error: ${equation.trim()}</div>`;
         }
       });
 
-      // Process inline math ($...$) - but not in code blocks
-      markdown = markdown.replace(/(?<!`)(\$)(?!\$)((?:[^$`]|`[^`]*`)*?)\1(?!`)/g, (match, _, equation) => {
-        try {
-          const renderedMath = katex.renderToString(equation.trim(), {
-            displayMode: false,
-            throwOnError: false,
-            strict: false
-          });
-          return `<span class="math-inline">${renderedMath}</span>`;
-        } catch (err) {
-          console.warn('LaTeX inline math rendering failed:', err);
-          return `<span class="math-error">$${equation}$</span>`;
+      // Process inline math ($...$) with better conflict avoidance
+      let inlineMathCount = 0;
+      
+      // Split into blocks to avoid processing math inside code blocks
+      const blocks = processedMarkdown.split(/(```[\s\S]*?```|`[^`]*`)/);
+      
+      const processedBlocks = blocks.map((block, index) => {
+        // Skip code blocks (odd indices after split)
+        if (index % 2 === 1 || block.startsWith('```') || block.startsWith('`')) {
+          return block;
         }
+        
+        // Process inline math in non-code blocks
+        return block.replace(/\$([^$\n\r]+?)\$/g, (match, equation) => {
+          inlineMathCount++;
+          try {
+            const cleanEquation = equation.trim();
+            if (!cleanEquation) {
+              return match;
+            }
+            
+            // Skip if it looks like it might be a code snippet or contains backticks
+            if (cleanEquation.includes('```') || cleanEquation.includes('`')) {
+              return match;
+            }
+            
+            const renderedMath = katex.renderToString(cleanEquation, {
+              displayMode: false,
+              throwOnError: false,
+              strict: false,
+              trust: true,
+              output: 'html'
+            });
+            
+            return `<span class="math-inline">${renderedMath}</span>`;
+          } catch (err) {
+            console.warn('LaTeX inline math rendering failed:', err);
+            return `<span class="math-error">Inline Math Error: ${equation}</span>`;
+          }
+        });
       });
 
-      return markdown;
+      return processedBlocks.join('');
     } catch (error) {
-      console.error('Error processing LaTeX equations:', error);
+      console.error('Critical error in LaTeX processing:', error);
       return markdown;
     }
   }
