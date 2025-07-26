@@ -11,7 +11,24 @@ export class FileBlogService {
   private static postsDirectory = path.join(process.cwd(), 'posts');
 
   /**
-   * Get all blog posts from markdown files
+   * Parse filename to extract a clean title (converts underscores to dots in numeric patterns)
+   */
+  private static parseFilenameTitle(filename: string): string {
+    const nameWithoutExt = filename.replace('.md', '');
+    
+    // Convert patterns like "1_1_foundations" to "1.1.foundations"
+    const converted = nameWithoutExt.replace(/(\d+)_(\d+)/g, '$1.$2');
+    
+    // Convert remaining underscores and hyphens to spaces and title case
+    return converted
+      .replace(/[-_]/g, ' ')
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
+  /**
+   * Get all blog posts from markdown files (supports nested category folders)
    */
   static async getAllPosts(): Promise<BlogPost[]> {
     // Return empty array if running on client side
@@ -28,47 +45,101 @@ export class FileBlogService {
         return [];
       }
 
-      const fileNames = fs.readdirSync(this.postsDirectory);
-      const markdownFiles = fileNames.filter(name => name.endsWith('.md'));
+      const validCategories = ['Business Objective', 'Engineering Architecture', 'Ingestion', 'Retrieval', 'Generation', 'Evaluation', 'Prompt Tuning', 'Agentic Workflow', 'GenAI Knowledge'];
+      const allPosts: BlogPost[] = [];
 
-      const posts = await Promise.all(
-        markdownFiles.map(async (fileName) => {
-          const filePath = path.join(this.postsDirectory, fileName);
-          const fileContents = fs.readFileSync(filePath, 'utf8');
+      // Read from category folders
+      for (const category of validCategories) {
+        const categoryPath = path.join(this.postsDirectory, category);
+        
+        if (fs.existsSync(categoryPath) && fs.statSync(categoryPath).isDirectory()) {
+          const categoryFiles = fs.readdirSync(categoryPath);
+          const markdownFiles = categoryFiles.filter(name => name.endsWith('.md'));
+
+          const categoryPosts = await Promise.all(
+            markdownFiles.map(async (fileName) => {
+              const filePath = path.join(categoryPath, fileName);
+              const fileContents = fs.readFileSync(filePath, 'utf8');
+              
+              // Parse front matter
+              const { data, content } = matter(fileContents);
+              
+              // Extract metadata with defaults and validation
+              const slug = data.slug || fileName.replace('.md', '');
+              const title = data.title || this.extractTitleFromContent(content) || this.parseFilenameTitle(fileName);
+              
+              const date = data.date ? new Date(data.date) : new Date();
+              const summary = data.summary || this.extractSummary(content);
+              
+              // Process markdown content to HTML with LaTeX support
+              const htmlContent = await this.markdownToHtml(content);
+              
+              return {
+                id: slug,
+                title,
+                content: htmlContent,
+                category: category as BlogCategory,
+                date,
+                slug,
+                summary,
+                tags: data.tags || [],
+                author: data.author || 'Haoyang Han',
+              } as BlogPost;
+            })
+          );
           
-          // Parse front matter
-          const { data, content } = matter(fileContents);
-          
-          // Extract metadata with defaults and validation
-          const slug = data.slug || fileName.replace('.md', '');
-          const title = data.title || this.extractTitleFromContent(content) || fileName.replace('.md', '').replace(/-/g, ' ');
-          
-          // Validate category and default to 'Uncategorized' if invalid
-          const validCategories = ['Business Objective', 'Engineering Architecture', 'Ingestion', 'Retrieval', 'Generation', 'Evaluation', 'Prompt Tuning', 'Agentic Workflow', 'GenAI Knowledge'];
-          const category = data.category && validCategories.includes(data.category) ? data.category : 'Uncategorized';
-          
-          const date = data.date ? new Date(data.date) : new Date();
-          const summary = data.summary || this.extractSummary(content);
-          
-          // Process markdown content to HTML with LaTeX support
-          const htmlContent = await this.markdownToHtml(content);
-          
-          return {
-            id: slug,
-            title,
-            content: htmlContent,
-            category: category as BlogCategory,
-            date,
-            slug,
-            summary,
-            tags: data.tags || [],
-            author: data.author || 'Haoyang Han',
-          } as BlogPost;
-        })
+          allPosts.push(...categoryPosts);
+        }
+      }
+
+      // Also check for any remaining files in the root posts directory (legacy support)
+      const rootFiles = fs.readdirSync(this.postsDirectory);
+      const rootMarkdownFiles = rootFiles.filter(name => 
+        name.endsWith('.md') && 
+        fs.statSync(path.join(this.postsDirectory, name)).isFile()
       );
 
+      if (rootMarkdownFiles.length > 0) {
+        const rootPosts = await Promise.all(
+          rootMarkdownFiles.map(async (fileName) => {
+            const filePath = path.join(this.postsDirectory, fileName);
+            const fileContents = fs.readFileSync(filePath, 'utf8');
+            
+            // Parse front matter
+            const { data, content } = matter(fileContents);
+            
+            // Extract metadata with defaults and validation
+            const slug = data.slug || fileName.replace('.md', '');
+            const title = data.title || this.extractTitleFromContent(content) || this.parseFilenameTitle(fileName);
+            
+            // Use category from front matter or default to 'Uncategorized'
+            const category = data.category && validCategories.includes(data.category) ? data.category : 'Uncategorized';
+            
+            const date = data.date ? new Date(data.date) : new Date();
+            const summary = data.summary || this.extractSummary(content);
+            
+            // Process markdown content to HTML with LaTeX support
+            const htmlContent = await this.markdownToHtml(content);
+            
+            return {
+              id: slug,
+              title,
+              content: htmlContent,
+              category: category as BlogCategory,
+              date,
+              slug,
+              summary,
+              tags: data.tags || [],
+              author: data.author || 'Haoyang Han',
+            } as BlogPost;
+          })
+        );
+        
+        allPosts.push(...rootPosts);
+      }
+
       // Sort posts by date (newest first)
-      return posts.sort((a, b) => b.date.getTime() - a.date.getTime());
+      return allPosts.sort((a, b) => b.date.getTime() - a.date.getTime());
     } catch (error) {
       console.error('Error loading posts from files:', error);
       return [];

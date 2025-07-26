@@ -17,16 +17,28 @@ export default function UploadPage() {
   const [uploading, setUploading] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  const parseFilenameTitle = (filename: string): string => {
+    const nameWithoutExt = filename.replace('.md', '');
+    
+    // Convert patterns like "1_1_foundations" to "1.1.foundations"
+    const converted = nameWithoutExt.replace(/(\d+)_(\d+)/g, '$1.$2');
+    
+    // Convert remaining underscores and hyphens to spaces and title case
+    return converted
+      .replace(/[-_]/g, ' ')
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
   const onDrop = (acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
       const file = acceptedFiles[0];
       setFormData(prev => ({ ...prev, file }));
       
-      // Auto-generate title from filename if empty
-      if (!formData.title) {
-        const fileName = file.name.replace('.md', '').replace(/[-_]/g, ' ');
-        setFormData(prev => ({ ...prev, title: fileName }));
-      }
+      // Auto-generate title from filename using enhanced parsing
+      const parsedTitle = parseFilenameTitle(file.name);
+      setFormData(prev => ({ ...prev, title: parsedTitle }));
     }
   };
 
@@ -42,23 +54,27 @@ export default function UploadPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.file || !formData.title) {
-      alert('Please provide both a title and select a file.');
+    if (!formData.file) {
+      alert('Please select a markdown file to upload.');
       return;
     }
 
     setUploading(true);
 
     try {
-      const content = await formData.file.text();
-      
-      // Create FormData for the API request
+      // Create FormData for the API request (upload-first approach)
       const uploadFormData = new FormData();
-      uploadFormData.append('title', formData.title);
-      uploadFormData.append('content', content);
-      uploadFormData.append('category', formData.category);
+      uploadFormData.append('file', formData.file);
+      
+      // Optional: include title and category if user wants to override
+      if (formData.title) {
+        uploadFormData.append('title', formData.title);
+      }
+      if (formData.category) {
+        uploadFormData.append('category', formData.category);
+      }
 
-      // Send to the new upload API endpoint that saves to file system
+      // Send to the upload API endpoint with file upload support
       const response = await fetch('/api/posts/upload', {
         method: 'POST',
         body: uploadFormData,
@@ -71,6 +87,11 @@ export default function UploadPage() {
 
       const result = await response.json();
       console.log('Upload successful:', result);
+      
+      // Show success message with parsed details
+      if (result.uploadType === 'file') {
+        alert(`✅ File uploaded successfully!\n\nTitle: ${result.title}\nCategory: ${result.category}\nSlug: ${result.slug}`);
+      }
       
       setSuccess(true);
       setTimeout(() => {
@@ -117,7 +138,7 @@ export default function UploadPage() {
           {/* Title Input */}
           <div>
             <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
-              Post Title
+              Post Title <span className="text-gray-500 font-normal">(optional - auto-parsed from filename)</span>
             </label>
             <input
               type="text"
@@ -125,9 +146,13 @@ export default function UploadPage() {
               value={formData.title}
               onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-              placeholder="Enter the title of your blog post"
-              required
+              placeholder="Will be auto-generated from filename (e.g., '1_1_foundations.md' → '1.1 Foundations')"
             />
+            {formData.file && (
+              <p className="mt-1 text-sm text-gray-600">
+                📝 Parsed from "{formData.file.name}": <strong>{formData.title}</strong>
+              </p>
+            )}
           </div>
 
           {/* Category Selection */}
@@ -198,10 +223,10 @@ export default function UploadPage() {
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={uploading || !formData.file || !formData.title}
+            disabled={uploading || !formData.file}
             className="w-full bg-gray-900 text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
           >
-            {uploading ? 'Uploading...' : 'Upload Post'}
+            {uploading ? 'Uploading...' : 'Upload Markdown File'}
           </button>
         </form>
       </main>
