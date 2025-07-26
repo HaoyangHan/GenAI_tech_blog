@@ -1,0 +1,22 @@
+# Assets Directory
+
+This directory contains assets (images, diagrams, etc.) for blog posts.
+
+## Directory Structure
+
+```
+posts/
+├── your-post.md
+├── another-post.md
+└── assets/
+    ├── rag-architecture.jpg
+    ├── attention-diagram.png
+    └── evaluation-metrics.svg
+```
+
+## Image Guidelines
+
+- Use descriptive filenames
+- Supported formats: JPG, PNG, SVG, WebP
+- Optimize images for web (reasonable file sizes)
+- Reference images in markdown using relative paths: `![Alt text](./assets/image.jpg)` 
