@@ -133,12 +133,37 @@ At its heart, attention can be described as a process of mapping a **Query (Q)**
 
 The process involves three main steps:
 1.  **Calculate Attention Scores:** A compatibility function is used to compute a score between the Query and each Key. A higher score means the corresponding Value is more relevant to the Query. The most common compatibility function is the dot product.
-2.  **Normalize Scores to Weights:** The raw scores are passed through a \`softmax\` function to convert them into a probability distribution. These normalized scores are the **attention weights**, and they sum to 1.
+2.  **Normalize Scores to Weights:** The raw scores are passed through a softmax function to convert them into a probability distribution. These normalized scores are the **attention weights**, and they sum to 1.
 3.  **Compute Weighted Sum:** The attention weights are multiplied by their corresponding Value vectors, and the results are summed up to produce the final output vector. This output is a weighted representation of the input values, where the weights are determined by the query's relevance to each key.
+
+#### Scaled Dot-Product Attention
+
+The Transformer architecture popularized a specific implementation called **Scaled Dot-Product Attention**.
+
+Given a query Q, keys K, and values V, the output is computed as:
+
+$$\\text{Attention}(Q, K, V) = \\text{softmax}\\left(\\frac{QK^T}{\\sqrt{d_k}}\\right)V$$
+
+Let's break down this formula:
+*   $Q \\in \\mathbb{R}^{n \\times d_k}$, $K \\in \\mathbb{R}^{m \\times d_k}$, $V \\in \\mathbb{R}^{m \\times d_v}$
+    *   $n$: sequence length of queries.
+    *   $m$: sequence length of keys/values.
+    *   $d_k$: dimension of queries and keys.
+    *   $d_v$: dimension of values.
+
+#### Multi-Head Attention
+
+Instead of performing a single attention function with high-dimensional keys, values, and queries, it was found to be more beneficial to linearly project the queries, keys, and values h times (the number of "heads") to different, learned, linear subspaces.
+
+$$\\text{MultiHead}(Q, K, V) = \\text{Concat}(\\text{head}_1, \\dots, \\text{head}_h)W^O$$
+
+where $\\text{head}_i = \\text{Attention}(QW_i^Q, KW_i^K, VW_i^V)$.
+
+**Why is this useful?** Multi-Head Attention allows the model to jointly attend to information from different representation subspaces at different positions. With a single attention head, averaging can dilute important signals. Multiple heads allow each head to specialize and focus on a different aspect of the input.
 
 ## Practical Implementation
 
-Here's how you can implement attention in PyTorch:
+Here's how you can implement Scaled Dot-Product Attention in PyTorch:
 
 \`\`\`python
 import torch
@@ -146,25 +171,99 @@ import torch.nn as nn
 import math
 
 class ScaledDotProductAttention(nn.Module):
+    """
+    Implements the Scaled Dot-Product Attention mechanism.
+    
+    Args:
+        dropout (float): Dropout probability.
+    """
     def __init__(self, dropout=0.1):
         super().__init__()
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, q, k, v, mask=None):
-        d_k = k.size(-1)
-        scores = torch.matmul(q, k.transpose(-2, -1)) / math.sqrt(d_k)
+        """
+        Performs the forward pass of the attention mechanism.
         
+        Args:
+            q (torch.Tensor): Query tensor. Shape: (batch_size, num_heads, seq_len_q, d_k)
+            k (torch.Tensor): Key tensor. Shape: (batch_size, num_heads, seq_len_k, d_k)
+            v (torch.Tensor): Value tensor. Shape: (batch_size, num_heads, seq_len_v, d_v)
+            mask (torch.Tensor, optional): Mask to be applied to attention scores.
+        
+        Returns:
+            torch.Tensor: The output of the attention mechanism
+            torch.Tensor: The attention weights
+        """
+        # Ensure the key dimension matches for dot product
+        d_k = k.size(-1)
+        
+        # 1. Compute dot product scores: (Q * K^T)
+        scores = torch.matmul(q, k.transpose(-2, -1))
+        
+        # 2. Scale the scores
+        scores = scores / math.sqrt(d_k)
+        
+        # 3. Apply mask (if provided)
         if mask is not None:
             scores = scores.masked_fill(mask == 0, -1e9)
             
+        # 4. Apply softmax to get attention weights
         attention_weights = torch.softmax(scores, dim=-1)
+        
+        # Apply dropout to the attention weights
         attention_weights = self.dropout(attention_weights)
         
+        # 5. Compute the weighted sum of values
         output = torch.matmul(attention_weights, v)
+        
         return output, attention_weights
+
+# Example Usage
+if __name__ == '__main__':
+    batch_size = 8
+    num_heads = 4
+    seq_len = 10
+    d_k = 16  # Dimension of keys/queries
+    d_v = 32  # Dimension of values
+    
+    # Create random input tensors
+    q = torch.randn(batch_size, num_heads, seq_len, d_k)
+    k = torch.randn(batch_size, num_heads, seq_len, d_k)
+    v = torch.randn(batch_size, num_heads, seq_len, d_v)
+    
+    # Create an attention module
+    attention_layer = ScaledDotProductAttention(dropout=0.1)
+    
+    # Forward pass
+    output, attn_weights = attention_layer(q, k, v)
+    
+    print("Output shape:", output.shape)
+    print("Attention weights shape:", attn_weights.shape)
 \`\`\`
 
-This implementation demonstrates the core concepts of attention mechanisms and their practical application in deep learning models.`;
+This implementation demonstrates the core concepts of attention mechanisms and their practical application in deep learning models.
+
+### Optimization Algorithms
+
+Optimization algorithms are the engines that power model training. They iteratively adjust the model's parameters (weights and biases) to minimize a loss function.
+
+#### Adam: Adaptive Moment Estimation
+
+**Adam** is arguably the most popular optimization algorithm in deep learning today. It combines the ideas of both Momentum (first-order moment) and RMSprop (second-order moment).
+
+The Adam update rules are:
+$$m_t = \\beta_1 m_{t-1} + (1 - \\beta_1) \\nabla L(w_t)$$
+$$v_t = \\beta_2 v_{t-1} + (1 - \\beta_2) (\\nabla L(w_t))^2$$
+
+With bias correction:
+$$\\hat{m}_t = \\frac{m_t}{1 - \\beta_1^t}$$
+$$\\hat{v}_t = \\frac{v_t}{1 - \\beta_2^t}$$
+
+Final parameter update:
+$$w_{t+1} = w_t - \\frac{\\eta}{\\sqrt{\\hat{v}_t} + \\epsilon} \\hat{m}_t$$
+
+Default values: $\\beta_1=0.9$, $\\beta_2=0.999$, and $\\epsilon=10^{-8}$.`;
 
       this.savePost(
         'LLM Base Knowledge - Foundations',

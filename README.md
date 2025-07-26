@@ -60,7 +60,7 @@ The blog supports the following RAG implementation categories:
    ```
 
 4. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+   Navigate to [http://localhost:4000](http://localhost:4000)
 
 ## 📝 Usage
 
