@@ -8,8 +8,6 @@ tags: ["RAG", "Ingestion", "Data Pipeline", "LlamaIndex", "ChromaDB", "MongoDB",
 author: "Haoyang Han"
 ---
 
-import Image from 'next/image'
-
 ## Introduction: The Foundation of Insight
 
 In our previous post, we established the "why" behind **TinyRAG**, detailing the **USD 156 million** business case for an agentic RAG system in financial memo generation. Now, we shift our focus to the "how," beginning with the most critical and foundational layer of the entire system: the **ingestion pipeline**.

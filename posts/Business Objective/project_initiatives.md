@@ -124,7 +124,12 @@ While we do not add this directly to the ROI for a conservative estimate, this d
 
 Architecting **TinyRAG** is not a purely technical endeavor; it is a direct response to a critical business need. By framing the problem through the lens of analyst workflow, cost structures, and value creation, we arrive at a clear mandate. The proposed system promises to slash memo generation costs by over **USD 150 million annually** while simultaneously enhancing the quality of our financial analysis. The hybrid architecture of targeted RAG for synthesis and agentic workflows for automation provides a robust, scalable, and defensible strategy.
 
-We have established the "why." The potential ROI is clear and compelling. Now, the question becomes "how." In our next post, we will begin our technical deep-dive, starting with the most critical component of any RAG system: **<u>"Building a Production-Ready, Asynchronous Ingestion Pipeline for Complex Financial Documents."</u>** We’ll explore the code and architectural patterns required to handle everything from messy PDFs to structured spreadsheets, setting the stage for superior retrieval performance.
+We have established the "why." The potential ROI is clear and compelling. Now, the question becomes "how." In our next post, [**"Building a Production-Ready, Asynchronous Ingestion Pipeline for Complex Financial Documents"**](/post/rag-ingestion-pipeline-for-financial-documents), we will begin our technical deep-dive, starting with the most critical component of any RAG system. We'll explore the code and architectural patterns required to handle everything from messy PDFs to structured spreadsheets, setting the stage for superior retrieval performance.
+
+---
+
+**📚 Next Article in Series:**  
+→ [Building a Production-Ready, Asynchronous Ingestion Pipeline](/post/rag-ingestion-pipeline-for-financial-documents)
 
 ### Sourcing and Further Reading
 
