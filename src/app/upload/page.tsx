@@ -6,7 +6,6 @@ import { useDropzone } from 'react-dropzone';
 import { Upload, File, X, Check } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import { BlogCategory, BLOG_CATEGORIES, UploadFormData } from '@/types';
-import { ClientBlogService } from '@/lib/client-blog-service';
 
 export default function UploadPage() {
   const router = useRouter();
@@ -52,7 +51,26 @@ export default function UploadPage() {
 
     try {
       const content = await formData.file.text();
-      await ClientBlogService.savePost(formData.title, content, formData.category);
+      
+      // Create FormData for the API request
+      const uploadFormData = new FormData();
+      uploadFormData.append('title', formData.title);
+      uploadFormData.append('content', content);
+      uploadFormData.append('category', formData.category);
+
+      // Send to the new upload API endpoint that saves to file system
+      const response = await fetch('/api/posts/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Upload failed');
+      }
+
+      const result = await response.json();
+      console.log('Upload successful:', result);
       
       setSuccess(true);
       setTimeout(() => {
@@ -60,7 +78,7 @@ export default function UploadPage() {
       }, 2000);
     } catch (error) {
       console.error('Upload failed:', error);
-      alert('Failed to upload the blog post. Please try again.');
+      alert(`Failed to upload the blog post: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setUploading(false);
     }
