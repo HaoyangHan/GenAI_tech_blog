@@ -1,5 +1,6 @@
 import { BlogPost, BlogCategory } from '@/types';
 import { marked } from 'marked';
+import hljs from 'highlight.js';
 
 export class ClientBlogService {
   /**
@@ -74,11 +75,46 @@ export class ClientBlogService {
   }
 
   /**
-   * Convert markdown to HTML
+   * Convert markdown to HTML with enhanced Python syntax highlighting
    */
   static async markdownToHtml(markdown: string): Promise<string> {
     try {
-      return await marked(markdown);
+      // Create a custom renderer for code blocks
+      const renderer = new marked.Renderer();
+      
+      // Override the code rendering to use highlight.js with Python as default
+      renderer.code = function(code: string, language?: string) {
+        // Default to Python if no language specified
+        const lang = language || 'python';
+        
+        let highlightedCode = code;
+        
+        // Try to highlight with the specified language
+        if (hljs.getLanguage(lang)) {
+          try {
+            highlightedCode = hljs.highlight(code, { language: lang }).value;
+          } catch (err) {
+            console.warn(`Syntax highlighting failed for language: ${lang}`, err);
+            // Fallback to Python highlighting
+            try {
+              highlightedCode = hljs.highlight(code, { language: 'python' }).value;
+            } catch (fallbackErr) {
+              highlightedCode = code; // Return plain code if both fail
+            }
+          }
+        } else {
+          // If language not supported, try Python as fallback
+          try {
+            highlightedCode = hljs.highlight(code, { language: 'python' }).value;
+          } catch (err) {
+            highlightedCode = code; // Return plain code if highlighting fails
+          }
+        }
+        
+        return `<pre><code class="hljs language-${lang}">${highlightedCode}</code></pre>`;
+      };
+
+      return await marked(markdown, { renderer });
     } catch (error) {
       console.error('Error converting markdown:', error);
       return markdown;
