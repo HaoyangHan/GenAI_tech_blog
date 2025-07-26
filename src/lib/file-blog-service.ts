@@ -163,16 +163,19 @@ export class FileBlogService {
         .replace(/\u2028/g, '\n') // Unicode line separator
         .replace(/\u2029/g, '\n'); // Unicode paragraph separator
       
-      // Process display math ($$...$$) with improved regex and error handling
+      // STEP 1: First, protect display math by replacing it with placeholders
+      const displayMathPlaceholders: string[] = [];
       let displayMathCount = 0;
+      
+      // Find and store all display math expressions
       processedMarkdown = processedMarkdown.replace(/\$\$\s*([\s\S]*?)\s*\$\$/g, (match, equation) => {
         displayMathCount++;
+        const cleanEquation = equation.trim();
+        if (!cleanEquation) {
+          return match;
+        }
+        
         try {
-          const cleanEquation = equation.trim();
-          if (!cleanEquation) {
-            return match;
-          }
-          
           const renderedMath = katex.renderToString(cleanEquation, {
             displayMode: true,
             throwOnError: false,
@@ -181,14 +184,18 @@ export class FileBlogService {
             output: 'html'
           });
           
-          return `<div class="math-display" data-latex="$$${cleanEquation}$$">${renderedMath}</div>`;
+          const placeholder = `__DISPLAY_MATH_${displayMathCount}__`;
+          displayMathPlaceholders.push(`<div class="math-display" data-latex="$$${cleanEquation}$$">${renderedMath}</div>`);
+          return placeholder;
         } catch (err) {
           console.warn('LaTeX display math rendering failed:', err);
-          return `<div class="math-error">Display Math Error: ${equation.trim()}</div>`;
+          const placeholder = `__DISPLAY_MATH_ERROR_${displayMathCount}__`;
+          displayMathPlaceholders.push(`<div class="math-error">Display Math Error: ${cleanEquation}</div>`);
+          return placeholder;
         }
       });
 
-      // Process inline math ($...$) with better conflict avoidance
+      // STEP 2: Process inline math ($...$) with better conflict avoidance
       let inlineMathCount = 0;
       
       // Split into blocks to avoid processing math inside code blocks
@@ -230,7 +237,17 @@ export class FileBlogService {
         });
       });
 
-      return processedBlocks.join('');
+      let result = processedBlocks.join('');
+
+      // STEP 3: Restore display math placeholders
+      displayMathPlaceholders.forEach((mathHtml, index) => {
+        const placeholder = `__DISPLAY_MATH_${index + 1}__`;
+        const errorPlaceholder = `__DISPLAY_MATH_ERROR_${index + 1}__`;
+        result = result.replace(placeholder, mathHtml);
+        result = result.replace(errorPlaceholder, mathHtml);
+      });
+
+      return result;
     } catch (error) {
       console.error('Critical error in LaTeX processing:', error);
       return markdown;

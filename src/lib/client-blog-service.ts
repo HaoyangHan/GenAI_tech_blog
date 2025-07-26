@@ -137,19 +137,19 @@ export class ClientBlogService {
         .replace(/\u2028/g, '\n') // Unicode line separator
         .replace(/\u2029/g, '\n'); // Unicode paragraph separator
       
-      // Process display math ($$...$$) with improved regex and error handling
+      // STEP 1: First, protect display math by replacing it with placeholders
+      const displayMathPlaceholders: string[] = [];
       let displayMathCount = 0;
+      
+      // Find and store all display math expressions
       processedMarkdown = processedMarkdown.replace(/\$\$\s*([\s\S]*?)\s*\$\$/g, (match, equation) => {
         displayMathCount++;
+        const cleanEquation = equation.trim();
+        if (!cleanEquation) {
+          return match;
+        }
+        
         try {
-          const cleanEquation = equation.trim();
-          if (!cleanEquation) {
-            console.warn(`Display math ${displayMathCount}: Empty equation, skipping`);
-            return match;
-          }
-          
-          console.log(`Processing display math ${displayMathCount}: ${cleanEquation.substring(0, 50)}...`);
-          
           const renderedMath = katex.renderToString(cleanEquation, {
             displayMode: true,
             throwOnError: false,
@@ -158,14 +158,18 @@ export class ClientBlogService {
             output: 'html'
           });
           
-          return `<div class="math-display" data-latex="$$${cleanEquation}$$">${renderedMath}</div>`;
+          const placeholder = `__DISPLAY_MATH_${displayMathCount}__`;
+          displayMathPlaceholders.push(`<div class="math-display" data-latex="$$${cleanEquation}$$">${renderedMath}</div>`);
+          return placeholder;
         } catch (err) {
-          console.error(`Display math ${displayMathCount}: Rendering failed:`, err, 'for equation:', equation.substring(0, 100));
-          return `<div class="math-error">Display Math Error: ${equation.trim()}</div>`;
+          console.error(`Display math ${displayMathCount}: Rendering failed:`, err, 'for equation:', cleanEquation.substring(0, 100));
+          const placeholder = `__DISPLAY_MATH_ERROR_${displayMathCount}__`;
+          displayMathPlaceholders.push(`<div class="math-error">Display Math Error: ${cleanEquation}</div>`);
+          return placeholder;
         }
       });
 
-      // Process inline math ($...$) with better conflict avoidance
+      // STEP 2: Process inline math ($...$) with better conflict avoidance
       let inlineMathCount = 0;
       
       // Split into blocks to avoid processing math inside code blocks
@@ -183,7 +187,6 @@ export class ClientBlogService {
           try {
             const cleanEquation = equation.trim();
             if (!cleanEquation) {
-              console.warn(`Inline math ${inlineMathCount}: Empty equation, skipping`);
               return match;
             }
             
@@ -191,8 +194,6 @@ export class ClientBlogService {
             if (cleanEquation.includes('```') || cleanEquation.includes('`')) {
               return match;
             }
-            
-            console.log(`Processing inline math ${inlineMathCount}: ${cleanEquation}`);
             
             const renderedMath = katex.renderToString(cleanEquation, {
               displayMode: false,
@@ -210,10 +211,17 @@ export class ClientBlogService {
         });
       });
 
-      const finalResult = processedBlocks.join('');
-      console.log(`LaTeX processing complete. Processed ${displayMathCount} display math and ${inlineMathCount} inline math expressions`);
-      
-      return finalResult;
+      let result = processedBlocks.join('');
+
+      // STEP 3: Restore display math placeholders
+      displayMathPlaceholders.forEach((mathHtml, index) => {
+        const placeholder = `__DISPLAY_MATH_${index + 1}__`;
+        const errorPlaceholder = `__DISPLAY_MATH_ERROR_${index + 1}__`;
+        result = result.replace(placeholder, mathHtml);
+        result = result.replace(errorPlaceholder, mathHtml);
+      });
+
+      return result;
     } catch (error) {
       console.error('Critical error in LaTeX processing:', error);
       return markdown;
