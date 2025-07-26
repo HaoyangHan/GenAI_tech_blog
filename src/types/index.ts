@@ -17,7 +17,8 @@ export type BlogCategory =
   | 'Generation'
   | 'Evaluation'
   | 'Prompt Tuning'
-  | 'Agentic Workflow';
+  | 'Agentic Workflow'
+  | 'Uncategorized';
 
 export const BLOG_CATEGORIES: BlogCategory[] = [
   'All',
@@ -29,6 +30,7 @@ export const BLOG_CATEGORIES: BlogCategory[] = [
   'Evaluation',
   'Prompt Tuning',
   'Agentic Workflow',
+  'Uncategorized',
 ];
 
 export interface UploadFormData {

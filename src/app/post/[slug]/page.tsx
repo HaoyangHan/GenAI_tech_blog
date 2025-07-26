@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import { BlogPost } from '@/types';
-import { BlogService } from '@/lib/blog-service';
+import { ClientBlogService } from '@/lib/client-blog-service';
 import { formatDate } from '@/lib/utils';
 
 export default function BlogPostPage() {
@@ -22,11 +22,11 @@ export default function BlogPostPage() {
         return;
       }
 
-      const foundPost = BlogService.getPostBySlug(params.slug);
+      const foundPost = await ClientBlogService.getPostBySlug(params.slug);
       
       if (foundPost) {
         setPost(foundPost);
-        const html = await BlogService.markdownToHtml(foundPost.content);
+        const html = await ClientBlogService.markdownToHtml(foundPost.content);
         setHtmlContent(html);
       }
       

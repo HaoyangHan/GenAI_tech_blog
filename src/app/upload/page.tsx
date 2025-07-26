@@ -6,7 +6,7 @@ import { useDropzone } from 'react-dropzone';
 import { Upload, File, X, Check } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import { BlogCategory, BLOG_CATEGORIES, UploadFormData } from '@/types';
-import { BlogService } from '@/lib/blog-service';
+import { ClientBlogService } from '@/lib/client-blog-service';
 
 export default function UploadPage() {
   const router = useRouter();
@@ -52,7 +52,7 @@ export default function UploadPage() {
 
     try {
       const content = await formData.file.text();
-      await BlogService.savePost(formData.title, content, formData.category);
+      await ClientBlogService.savePost(formData.title, content, formData.category);
       
       setSuccess(true);
       setTimeout(() => {

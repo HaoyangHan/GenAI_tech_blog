@@ -37,10 +37,14 @@ export class FileBlogService {
           // Parse front matter
           const { data, content } = matter(fileContents);
           
-          // Extract metadata with defaults
+          // Extract metadata with defaults and validation
           const slug = data.slug || fileName.replace('.md', '');
-          const title = data.title || 'Untitled';
-          const category = data.category || 'Engineering Architecture';
+          const title = data.title || this.extractTitleFromContent(content) || fileName.replace('.md', '').replace(/-/g, ' ');
+          
+          // Validate category and default to 'Uncategorized' if invalid
+          const validCategories = ['Business Objective', 'Engineering Architecture', 'Ingestion', 'Retrieval', 'Generation', 'Evaluation', 'Prompt Tuning', 'Agentic Workflow'];
+          const category = data.category && validCategories.includes(data.category) ? data.category : 'Uncategorized';
+          
           const date = data.date ? new Date(data.date) : new Date();
           const summary = data.summary || this.extractSummary(content);
           
@@ -97,6 +101,18 @@ export class FileBlogService {
       console.error('Error converting markdown:', error);
       return markdown;
     }
+  }
+
+  /**
+   * Extract title from markdown content (first heading)
+   */
+  private static extractTitleFromContent(content: string): string | null {
+    // Look for the first heading (# Title)
+    const headingMatch = content.match(/^#\s+(.+)$/m);
+    if (headingMatch) {
+      return headingMatch[1].trim();
+    }
+    return null;
   }
 
   /**
@@ -190,18 +206,32 @@ export class FileBlogService {
   }
 }
 
-// Export a hybrid service that uses file-based on server, localStorage on client
+// Export a hybrid service that uses file-based on server, API on client
 export class HybridBlogService {
   /**
-   * Get all posts - uses file system on server, localStorage on client
+   * Get all posts - uses file system on server, API on client
    */
   static async getAllPosts(): Promise<BlogPost[]> {
     if (typeof window === 'undefined') {
       // Server side - use file system
       return await FileBlogService.getAllPosts();
     } else {
-      // Client side - use localStorage (fallback)
-      return this.getLocalStoragePosts();
+      // Client side - use API
+      try {
+        const response = await fetch('/api/posts');
+        if (!response.ok) {
+          throw new Error('Failed to fetch posts');
+        }
+        const posts = await response.json();
+        return posts.map((post: any) => ({
+          ...post,
+          date: new Date(post.date),
+        }));
+      } catch (error) {
+        console.error('Error fetching posts from API:', error);
+        // Fallback to localStorage
+        return this.getLocalStoragePosts();
+      }
     }
   }
 
@@ -209,21 +239,62 @@ export class HybridBlogService {
    * Get posts by category
    */
   static async getPostsByCategory(category: BlogCategory): Promise<BlogPost[]> {
-    const allPosts = await this.getAllPosts();
-    
-    if (category === 'All') {
-      return allPosts;
+    if (typeof window === 'undefined') {
+      // Server side - use file system
+      return await FileBlogService.getPostsByCategory(category);
+    } else {
+      // Client side - use API
+      try {
+        const response = await fetch(`/api/posts?category=${encodeURIComponent(category)}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch posts');
+        }
+        const posts = await response.json();
+        return posts.map((post: any) => ({
+          ...post,
+          date: new Date(post.date),
+        }));
+      } catch (error) {
+        console.error('Error fetching posts from API:', error);
+        // Fallback to localStorage
+        const allPosts = this.getLocalStoragePosts();
+        if (category === 'All') {
+          return allPosts;
+        }
+        return allPosts.filter(post => post.category === category);
+      }
     }
-    
-    return allPosts.filter(post => post.category === category);
   }
 
   /**
    * Get post by slug
    */
   static async getPostBySlug(slug: string): Promise<BlogPost | null> {
-    const posts = await this.getAllPosts();
-    return posts.find(post => post.slug === slug) || null;
+    if (typeof window === 'undefined') {
+      // Server side - use file system
+      return await FileBlogService.getPostBySlug(slug);
+    } else {
+      // Client side - use API
+      try {
+        const response = await fetch(`/api/posts/${encodeURIComponent(slug)}`);
+        if (!response.ok) {
+          if (response.status === 404) {
+            return null;
+          }
+          throw new Error('Failed to fetch post');
+        }
+        const post = await response.json();
+        return {
+          ...post,
+          date: new Date(post.date),
+        };
+      } catch (error) {
+        console.error('Error fetching post from API:', error);
+        // Fallback to localStorage
+        const posts = this.getLocalStoragePosts();
+        return posts.find(post => post.slug === slug) || null;
+      }
+    }
   }
 
   /**

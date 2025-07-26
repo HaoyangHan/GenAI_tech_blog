@@ -5,7 +5,7 @@ import Header from '@/components/layout/Header';
 import CategoryFilter from '@/components/ui/CategoryFilter';
 import BlogPostCard from '@/components/ui/BlogPostCard';
 import { BlogPost, BlogCategory } from '@/types';
-import { BlogService } from '@/lib/blog-service';
+import { ClientBlogService } from '@/lib/client-blog-service';
 
 export default function HomePage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -13,17 +13,22 @@ export default function HomePage() {
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
 
   useEffect(() => {
-    // Initialize sample data and load posts
-    BlogService.initializeSampleData();
-    const allPosts = BlogService.getAllPosts();
-    setPosts(allPosts);
+    // Load posts from API or localStorage
+    const loadPosts = async () => {
+      const allPosts = await ClientBlogService.getAllPosts();
+      setPosts(allPosts);
+    };
+    loadPosts();
   }, []);
 
   useEffect(() => {
     // Filter posts when category changes
-    const filtered = BlogService.getPostsByCategory(selectedCategory);
-    setFilteredPosts(filtered);
-  }, [selectedCategory, posts]);
+    const loadFilteredPosts = async () => {
+      const filtered = await ClientBlogService.getPostsByCategory(selectedCategory);
+      setFilteredPosts(filtered);
+    };
+    loadFilteredPosts();
+  }, [selectedCategory]);
 
   return (
     <div className="min-h-screen bg-white">
