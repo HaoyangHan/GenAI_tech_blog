@@ -93,6 +93,12 @@ $$
 | Cost | $240,000 | `800 × $300` |
 ```
 
+### ⚠️ Table Formatting Rules
+- **Never use HTML spans inside table cells** - causes rendering conflicts
+- **Keep calculations outside tables** - use calculation details after the table
+- **Use simple markdown formatting only** - bold (`**text**`) and code (`` `text` ``)
+- **Move colored text outside tables** - use callouts or highlights after tables
+
 ## 6. Best Practices
 
 ### 1. Consistency
