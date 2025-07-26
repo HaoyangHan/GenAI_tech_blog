@@ -95,7 +95,7 @@ date: "2024-01-26"
 summary: "Brief description of the post"           # Auto-generated if not provided
 slug: "your-post-url-slug"                        # Auto-generated from title if not provided
 tags: ["RAG", "LLM", "Implementation"]             # Array of tags for categorization
-author: "Your Name"                                # Defaults to "Anonymous" if not provided
+author: "Your Name"                                # Defaults to "Haoyang Han" if not provided
 ---
 ```
 
@@ -111,6 +111,7 @@ The system supports these predefined categories:
 - `Evaluation` - Metrics, testing, and performance assessment
 - `Prompt Tuning` - Prompt engineering and optimization
 - `Agentic Workflow` - AI agent implementations and workflows
+- `GenAI Knowledge` - General AI concepts, fundamentals, and educational content
 - `Uncategorized` - **Automatic fallback** for posts without valid categories
 
 ## Automatic Categorization

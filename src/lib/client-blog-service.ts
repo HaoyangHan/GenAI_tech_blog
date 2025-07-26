@@ -118,6 +118,8 @@ export class ClientBlogService {
       date: new Date(),
       slug: title.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, '-'),
       summary: this.extractSummary(content),
+      tags: [],
+      author: 'Haoyang Han',
     };
 
     const updatedPosts = [newPost, ...posts];

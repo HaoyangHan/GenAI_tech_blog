@@ -59,7 +59,7 @@ posts/
 - `summary`: Brief description (auto-generated if not provided)
 - `slug`: URL-friendly identifier (auto-generated from title if not provided)
 - `tags`: Array of tags for the post
-- `author`: Author name (defaults to "Anonymous")
+- `author`: Author name (defaults to "Haoyang Han")
 
 ### Supported Categories
 - Business Objective

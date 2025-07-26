@@ -6,6 +6,8 @@ export interface BlogPost {
   date: Date;
   slug: string;
   summary?: string;
+  tags?: string[];
+  author?: string;
 }
 
 export type BlogCategory = 
@@ -18,6 +20,7 @@ export type BlogCategory =
   | 'Evaluation'
   | 'Prompt Tuning'
   | 'Agentic Workflow'
+  | 'GenAI Knowledge'
   | 'Uncategorized';
 
 export const BLOG_CATEGORIES: BlogCategory[] = [
@@ -30,6 +33,7 @@ export const BLOG_CATEGORIES: BlogCategory[] = [
   'Evaluation',
   'Prompt Tuning',
   'Agentic Workflow',
+  'GenAI Knowledge',
   'Uncategorized',
 ];
 

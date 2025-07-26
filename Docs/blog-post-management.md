@@ -106,7 +106,7 @@ date: "2024-01-20"                    # Required: Publication date (YYYY-MM-DD)
 summary: "Brief description"          # Optional: Auto-generated if not provided
 slug: "url-friendly-slug"             # Optional: Auto-generated from title if not provided
 tags: ["tag1", "tag2"]                # Optional: Array of tags
-author: "Author Name"                 # Optional: Defaults to "Anonymous"
+author: "Author Name"                 # Optional: Defaults to "Haoyang Han"
 ---
 ```
 

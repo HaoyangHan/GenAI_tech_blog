@@ -42,7 +42,7 @@ export class FileBlogService {
           const title = data.title || this.extractTitleFromContent(content) || fileName.replace('.md', '').replace(/-/g, ' ');
           
           // Validate category and default to 'Uncategorized' if invalid
-          const validCategories = ['Business Objective', 'Engineering Architecture', 'Ingestion', 'Retrieval', 'Generation', 'Evaluation', 'Prompt Tuning', 'Agentic Workflow'];
+          const validCategories = ['Business Objective', 'Engineering Architecture', 'Ingestion', 'Retrieval', 'Generation', 'Evaluation', 'Prompt Tuning', 'Agentic Workflow', 'GenAI Knowledge'];
           const category = data.category && validCategories.includes(data.category) ? data.category : 'Uncategorized';
           
           const date = data.date ? new Date(data.date) : new Date();
@@ -57,7 +57,7 @@ export class FileBlogService {
             slug,
             summary,
             tags: data.tags || [],
-            author: data.author || 'Anonymous',
+            author: data.author || 'Haoyang Han',
           } as BlogPost;
         })
       );
