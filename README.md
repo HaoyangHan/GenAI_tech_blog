@@ -35,7 +35,7 @@ The blog supports the following RAG implementation categories:
 - Node.js 18.17.0 or higher (required for Next.js 14+)
 - npm or yarn package manager
 
-> **Note**: If you have Node.js 18.16.0, the development server will still work, but you may see warnings. For production builds, please upgrade to Node.js 18.17.0 or higher.
+> **Note**: This project has been tested with Node.js 20.19.4. If you need to upgrade Node.js, you can install it using Homebrew: `brew install node@20` and add it to your PATH.
 
 ### Installation
 

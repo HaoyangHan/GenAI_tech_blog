@@ -16,7 +16,7 @@ export class BlogService {
       if (!posts) return [];
       
       const parsedPosts = JSON.parse(posts);
-      return parsedPosts.map((post: any) => ({
+      return parsedPosts.map((post: BlogPost & { date: string }) => ({
         ...post,
         date: new Date(post.date),
       }));
