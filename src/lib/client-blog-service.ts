@@ -81,7 +81,7 @@ export class ClientBlogService {
   static async markdownToHtml(markdown: string): Promise<string> {
     try {
       // First, process LaTeX equations
-      let processedMarkdown = this.processLaTeXEquations(markdown);
+      const processedMarkdown = this.processLaTeXEquations(markdown);
       
       // Create a custom renderer for code blocks
       const renderer = new marked.Renderer();

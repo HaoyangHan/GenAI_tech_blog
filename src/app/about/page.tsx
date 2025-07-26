@@ -24,7 +24,7 @@ export default function AboutPage() {
             <h2 className="text-3xl font-bold text-gray-900 mb-6">About Me</h2>
             <div className="prose prose-lg max-w-none text-gray-700">
               <p className="mb-4">
-                Hi, I'm <strong>Haoyang Han</strong>, a passionate technologist fascinated by the transformative power of 
+                Hi, I&apos;m <strong>Haoyang Han</strong>, a passionate technologist fascinated by the transformative power of 
                 Generative AI. My journey began with curiosity about how machines could create, understand, and reason 
                 like humans, and has evolved into a deep dive into the technical foundations that make it all possible.
               </p>
@@ -35,7 +35,7 @@ export default function AboutPage() {
               </p>
               <p>
                 My goal is to bridge the gap between theoretical understanding and practical application, 
-                sharing both the "what" and the "why" behind the technologies that are reshaping our world.
+                sharing both the &quot;what&quot; and the &quot;why&quot; behind the technologies that are reshaping our world.
               </p>
             </div>
           </div>
@@ -43,7 +43,7 @@ export default function AboutPage() {
 
         {/* What You'll Find Here */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">What You'll Find Here</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">What You&apos;ll Find Here</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -117,9 +117,9 @@ export default function AboutPage() {
 
         {/* Connect */}
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Let's Connect</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Let&apos;s Connect</h2>
           <p className="text-lg text-gray-600 mb-8">
-            I'm always excited to discuss AI, share insights, and learn from fellow enthusiasts.
+            I&apos;m always excited to discuss AI, share insights, and learn from fellow enthusiasts.
           </p>
           <div className="space-y-4">
             <p className="text-gray-600">

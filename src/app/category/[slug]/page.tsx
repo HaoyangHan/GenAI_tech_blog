@@ -146,7 +146,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No posts yet</h3>
             <p className="text-gray-600">
-              There are no posts in the "{categoryName}" category yet. Check back soon for new content!
+              There are no posts in the &quot;{categoryName}&quot; category yet. Check back soon for new content!
             </p>
           </div>
         )}

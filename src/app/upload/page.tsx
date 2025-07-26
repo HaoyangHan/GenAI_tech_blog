@@ -150,7 +150,7 @@ export default function UploadPage() {
             />
             {formData.file && (
               <p className="mt-1 text-sm text-gray-600">
-                📝 Parsed from "{formData.file.name}": <strong>{formData.title}</strong>
+                📝 Parsed from &quot;{formData.file.name}&quot;: <strong>{formData.title}</strong>
               </p>
             )}
           </div>
