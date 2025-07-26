@@ -2,6 +2,7 @@
 title: "The $156 Million Question: Architecting an Agentic RAG System for High-Stakes Financial Memo Generation"
 category: "Business Objective"
 date: "July 26, 2025"
+updated: "2024-12-19"
 summary: "Financial memo generation is a time-intensive, high-stakes process bottlenecking investment decisions. This article breaks down the business case for TinyRAG, our hybrid RAG and Agentic AI system, demonstrating how it accelerates memo creation by 65% and drives over $156M in annual value through calculated cost savings and enhanced profit opportunities."
 slug: "agentic-rag-for-financial-memo-generation"
 tags: ["RAG", "Agentic AI", "GenAI", "Business Objective", "ROI", "Financial AI", "LlamaIndex"]
