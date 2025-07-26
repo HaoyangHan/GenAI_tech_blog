@@ -8,12 +8,14 @@ import Header from '@/components/layout/Header';
 import { BlogPost } from '@/types';
 import { ClientBlogService } from '@/lib/client-blog-service';
 import { formatDate } from '@/lib/utils';
+import { useEnhancedContent } from '@/hooks/useEnhancedContent';
 
 export default function BlogPostPage() {
   const params = useParams();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [htmlContent, setHtmlContent] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const contentRef = useEnhancedContent(htmlContent);
 
   useEffect(() => {
     const loadPost = async () => {
@@ -26,8 +28,8 @@ export default function BlogPostPage() {
       
       if (foundPost) {
         setPost(foundPost);
-        const html = await ClientBlogService.markdownToHtml(foundPost.content);
-        setHtmlContent(html);
+        // The API now returns processed HTML content, so we don't need to process it again
+        setHtmlContent(foundPost.content);
       }
       
       setLoading(false);
@@ -105,6 +107,7 @@ export default function BlogPostPage() {
 
         {/* Post Content */}
         <article 
+          ref={contentRef}
           className="prose-custom"
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />

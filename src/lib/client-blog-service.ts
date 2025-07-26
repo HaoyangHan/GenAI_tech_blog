@@ -158,9 +158,7 @@ export class ClientBlogService {
             output: 'html'
           });
           
-          const result = `<div class="math-display">${renderedMath}</div>`;
-          console.log(`Display math ${displayMathCount}: Successfully rendered`);
-          return result;
+          return `<div class="math-display" data-latex="$$${cleanEquation}$$">${renderedMath}</div>`;
         } catch (err) {
           console.error(`Display math ${displayMathCount}: Rendering failed:`, err, 'for equation:', equation.substring(0, 100));
           return `<div class="math-error">Display Math Error: ${equation.trim()}</div>`;
@@ -204,9 +202,7 @@ export class ClientBlogService {
               output: 'html'
             });
             
-            const result = `<span class="math-inline">${renderedMath}</span>`;
-            console.log(`Inline math ${inlineMathCount}: Successfully rendered`);
-            return result;
+            return `<span class="math-inline" data-latex="$${cleanEquation}$">${renderedMath}</span>`;
           } catch (err) {
             console.error(`Inline math ${inlineMathCount}: Rendering failed:`, err, 'for equation:', equation);
             return `<span class="math-error">Inline Math Error: ${equation}</span>`;

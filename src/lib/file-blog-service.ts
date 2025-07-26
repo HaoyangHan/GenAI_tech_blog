@@ -181,7 +181,7 @@ export class FileBlogService {
             output: 'html'
           });
           
-          return `<div class="math-display">${renderedMath}</div>`;
+          return `<div class="math-display" data-latex="$$${cleanEquation}$$">${renderedMath}</div>`;
         } catch (err) {
           console.warn('LaTeX display math rendering failed:', err);
           return `<div class="math-error">Display Math Error: ${equation.trim()}</div>`;
@@ -222,7 +222,7 @@ export class FileBlogService {
               output: 'html'
             });
             
-            return `<span class="math-inline">${renderedMath}</span>`;
+            return `<span class="math-inline" data-latex="$${cleanEquation}$">${renderedMath}</span>`;
           } catch (err) {
             console.warn('LaTeX inline math rendering failed:', err);
             return `<span class="math-error">Inline Math Error: ${equation}</span>`;

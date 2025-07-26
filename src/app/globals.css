@@ -229,4 +229,31 @@
       @apply bg-red-900 text-red-200 border-red-700;
     }
   }
+
+  /* Copy button enhancements */
+  .prose-custom pre.group:hover .copy-button-container {
+    @apply opacity-100;
+  }
+
+  .prose-custom .copy-button-container {
+    @apply transition-opacity duration-200;
+  }
+
+  /* Ensure inline code copy buttons don't interfere with text flow */
+  .prose-custom code.group + .copy-button-container {
+    @apply inline-block ml-1 align-middle;
+  }
+
+  /* Improve math block copy button positioning */
+  .prose-custom .math-display.group {
+    @apply relative;
+  }
+
+  .prose-custom .math-display.group:hover .copy-button-container {
+    @apply opacity-100;
+  }
+
+  .prose-custom .math-inline.group + .copy-button-container {
+    @apply inline-block ml-1 align-middle;
+  }
 } 
