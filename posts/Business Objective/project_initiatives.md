@@ -54,9 +54,9 @@ The primary value of TinyRAG is measured in **direct cost savings** and **indire
 An average memo generation involves a team of 5 analysts over 4 weeks. Let's quantify the cost.
 
 *   **Total Manual Hours:** `5 analysts × 4 weeks/memo × 40 hours/week` = **800 hours/memo**
-*   **Total Manual Cost:** `800 hours × $300/hour` = <span style="color: #EA4335;">**$240,000/memo**</span>
+*   **Total Manual Cost:** `800 hours × $300/hour` = **$240,000/memo**
 
-Our internal experiments and workflow analysis project that TinyRAG can accelerate the entire process—from data ingestion to final draft—by <span style="color: #34A853;">**65%**</span>. The system handles the heavy lifting of research and initial composition, freeing analysts to focus on high-level strategy, validation, and refining the core thesis.
+Our internal experiments and workflow analysis project that TinyRAG can accelerate the entire process—from data ingestion to final draft—by **65%**. The system handles the heavy lifting of research and initial composition, freeing analysts to focus on high-level strategy, validation, and refining the core thesis.
 
 | Metric | Manual Process | TinyRAG-Augmented Process | Improvement |
 | :--- | :--- | :--- | :--- |
@@ -89,7 +89,7 @@ $$
 \end{aligned}
 $$
 
-A <span style="color: #34A853;">**$156 million annual cost reduction**</span> is a compelling figure that immediately justifies the engineering investment.
+A **$156 million annual cost reduction** is a compelling figure that immediately justifies the engineering investment.
 
 #### Perspective 2: Value Creation from Deeper Insights
 
@@ -125,7 +125,7 @@ While we do not add this directly to the ROI for a conservative estimate, this d
 
 ## Conclusion & Next Steps
 
-Architecting **TinyRAG** is not a purely technical endeavor; it is a direct response to a critical business need. By framing the problem through the lens of analyst workflow, cost structures, and value creation, we arrive at a clear mandate. The proposed system promises to slash memo generation costs by over <span style="color: #34A853;">**$150 million annually**</span> while simultaneously enhancing the quality of our financial analysis. The **hybrid architecture of targeted RAG for synthesis and agentic workflows for automation** provides a robust, scalable, and defensible strategy.
+Architecting **TinyRAG** is not a purely technical endeavor; it is a direct response to a critical business need. By framing the problem through the lens of analyst workflow, cost structures, and value creation, we arrive at a clear mandate. The proposed system promises to slash memo generation costs by over **$150 million annually** while simultaneously enhancing the quality of our financial analysis. The **hybrid architecture of targeted RAG for synthesis and agentic workflows for automation** provides a robust, scalable, and defensible strategy.
 
 We have established the "why." The potential ROI is clear and compelling. Now, the question becomes "how." In our next post, we will begin our technical deep-dive, starting with the most critical component of any RAG system: **"Building a Production-Ready, Asynchronous Ingestion Pipeline for Complex Financial Documents."** We’ll explore the code and architectural patterns required to handle everything from messy PDFs to structured spreadsheets, setting the stage for superior retrieval performance.
 
