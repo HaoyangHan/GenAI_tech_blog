@@ -1,4 +1,16 @@
-# Architecting Cross-Model Consistency: A Deep Dive into Model Selection and Prompt Engineering for Enterprise RAG
+---
+title: "Architecting Cross-Model Consistency: Model Selection and Prompt Engineering for TinyRAG"
+category: "Engineering Architecture"
+date: "July 27, 2025"
+summary: "This post details the prompt engineering, model architecture of TinyRAG, our resilient system that uses a geo-aware model selection framework, a database-driven prompting engine, and an automated evaluation pipeline to deliver consistent, compliant, and auditable financial memo generation across a diverse fleet of AI models."
+slug: "architecting-multi-model-rag-for-global-finance"
+tags: ["RAG", "Python", "LlamaIndex", "MongoDB", "Prompt Engineering", "Model Selection", "Financial AI", "LLM Ops"]
+author: "Haoyang Han"
+---
+
+
+
+# Architecting Cross-Model Consistency: Model Selection and Prompt Engineering for TinyRAG
 
 
 

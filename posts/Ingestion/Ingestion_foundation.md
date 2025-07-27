@@ -9,7 +9,7 @@ author: "Haoyang Han"
 ---
 
 **📚 Next Article in Series:**  
-→ [Building a Production-Ready, Asynchronous Ingestion Pipeline](/post/rag-ingestion-pipeline-for-financial-documents)
+→ [TinyRAG Ingestion Deep Dive: Your Questions Answered](/post/tinyrag-engineering-deep-dive-qa)
 
 
 ## Introduction: The Foundation of Insight
