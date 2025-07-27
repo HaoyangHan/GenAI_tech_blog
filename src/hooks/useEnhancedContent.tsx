@@ -104,7 +104,7 @@ export function useEnhancedContent(htmlContent: string) {
         const katexDisplay = math.querySelector('.katex-display');
         if (katexDisplay) {
           (katexDisplay as HTMLElement).style.position = 'relative';
-          math.classList.add('group');
+          (katexDisplay as HTMLElement).classList.add('group');
           katexDisplay.appendChild(buttonContainer);
         } else {
           // Fallback to original behavior
