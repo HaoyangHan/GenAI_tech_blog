@@ -16,6 +16,14 @@ What if we could radically accelerate this process while simultaneously increasi
 
 This is the central business objective behind our **TinyRAG** project. This isn't just about applying a large language model (LLM); it's about architecting a sophisticated system that blends the recall power of **<span style="color: #4285F4;">Retrieval Augmented Generation (RAG)</span>** with the autonomous execution capabilities of ***<span style="color: #34A853;">AI agents</span>***. In this post, we'll dissect the "why" behind **TinyRAG**, moving beyond the technical buzz to present a clear-eyed business case. We will quantify the immense value proposition, from drastic cost reductions to newly unlocked revenue streams, and lay the groundwork for the deep-dive technical posts to come in this series.
 
+<Image 
+  src="/images/ingestion/llama_index_cheatsheet.png"
+  alt="LlamaIndex Ingestion Pipeline Cheatsheet"
+  width={1200}
+  height={675}
+  className="rounded-lg"
+/>
+
 ## The 'Why': Data Science Thinking & Architectural Decisions
 
 Before a single line of code was written for **TinyRAG**, we started with a fundamental question: What is the core bottleneck in generating a high-quality financial memo? The answer wasn't a lack of information, but the **<span style="color: #4285F4;">humanly impossible task of synthesizing it at scale and speed</span>**.
