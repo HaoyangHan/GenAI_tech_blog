@@ -99,8 +99,8 @@ export function useEnhancedContent(htmlContent: string) {
       const buttonContainer = document.createElement('div');
       
       if (math.classList.contains('math-display')) {
-        // For display math, position absolute
-        buttonContainer.className = 'copy-button-container absolute top-2 right-2 z-10';
+        // For display math, use improved positioning strategy
+        buttonContainer.className = 'copy-button-container math-copy-btn';
         (math as HTMLElement).style.position = 'relative';
         math.classList.add('group');
         math.appendChild(buttonContainer);

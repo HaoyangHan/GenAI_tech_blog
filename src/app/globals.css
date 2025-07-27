@@ -165,6 +165,8 @@
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow-x: auto;
+    position: relative;
   }
   
   .prose-custom .math-inline {
@@ -251,6 +253,30 @@
 
   .prose-custom .math-display.group:hover .copy-button-container {
     @apply opacity-100;
+  }
+
+  /* Optimized math copy button positioning - always visible without horizontal scroll */
+  .prose-custom .math-copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 30;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  /* Enhanced visibility and positioning */
+  .prose-custom .math-display.group:hover .math-copy-btn {
+    opacity: 1;
+  }
+
+  /* Ensure button stays within the math container bounds */
+  .prose-custom .math-display {
+    padding-right: 3rem !important; /* Reserve space for copy button */
+  }
+
+  .prose-custom .math-display .katex-display {
+    padding-right: 0.5rem; /* Reduce internal padding to compensate */
   }
 
   .prose-custom .math-inline.group + .copy-button-container {
