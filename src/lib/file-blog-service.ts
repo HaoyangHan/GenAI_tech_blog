@@ -1,4 +1,4 @@
-import { BlogPost, BlogCategory } from '@/types';
+import { BlogPost, BlogCategory, KnowledgeBase, RAG_CATEGORIES, FOUNDATION_CATEGORIES } from '@/types';
 import { formatDate } from './utils';
 import matter from 'gray-matter';
 import { marked } from 'marked';
@@ -9,6 +9,7 @@ import path from 'path';
 
 export class FileBlogService {
   private static postsDirectory = path.join(process.cwd(), 'posts');
+  private static foundationPostsDirectory = path.join(process.cwd(), 'llm_foundation_posts');
 
   /**
    * Parse filename to extract a clean title (converts underscores to dots in numeric patterns)
@@ -28,7 +29,7 @@ export class FileBlogService {
   }
 
   /**
-   * Get all blog posts from markdown files (supports nested category folders)
+   * Get all blog posts from both knowledge bases
    */
   static async getAllPosts(): Promise<BlogPost[]> {
     // Return empty array if running on client side
@@ -38,71 +39,66 @@ export class FileBlogService {
     }
 
     try {
-      // Check if posts directory exists
-      if (!fs.existsSync(this.postsDirectory)) {
-        console.log('Posts directory not found, creating it...');
-        fs.mkdirSync(this.postsDirectory, { recursive: true });
-        return [];
+      const ragPosts = await this.getPostsByKnowledgeBase('rag');
+      const foundationPosts = await this.getPostsByKnowledgeBase('foundations');
+      
+      const allPosts = [...ragPosts, ...foundationPosts];
+      
+      // Sort posts by date (newest first)
+      return allPosts.sort((a, b) => b.date.getTime() - a.date.getTime());
+    } catch (error) {
+      console.error('Error loading all posts:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get posts from a specific knowledge base
+   */
+  static async getPostsByKnowledgeBase(knowledgeBase: KnowledgeBase): Promise<BlogPost[]> {
+    if (typeof window !== 'undefined') {
+      console.warn('FileBlogService should only be used on the server side');
+      return [];
+    }
+
+    try {
+      if (knowledgeBase === 'rag') {
+        return await this.getRAGPosts();
+      } else if (knowledgeBase === 'foundations') {
+        return await this.getFoundationPosts();
       }
+      return [];
+    } catch (error) {
+      console.error(`Error loading posts from knowledge base ${knowledgeBase}:`, error);
+      return [];
+    }
+  }
 
-      const validCategories = ['Business Objective', 'Engineering Architecture', 'Ingestion', 'Retrieval', 'Generation', 'Evaluation', 'Prompt Tuning', 'Agentic Workflow', 'GenAI Knowledge'];
-      const allPosts: BlogPost[] = [];
+  /**
+   * Get RAG implementation posts from the posts directory
+   */
+  private static async getRAGPosts(): Promise<BlogPost[]> {
+    // Check if posts directory exists
+    if (!fs.existsSync(this.postsDirectory)) {
+      console.log('Posts directory not found, creating it...');
+      fs.mkdirSync(this.postsDirectory, { recursive: true });
+      return [];
+    }
 
-      // Read from category folders
-      for (const category of validCategories) {
-        const categoryPath = path.join(this.postsDirectory, category);
-        
-        if (fs.existsSync(categoryPath) && fs.statSync(categoryPath).isDirectory()) {
-          const categoryFiles = fs.readdirSync(categoryPath);
-          const markdownFiles = categoryFiles.filter(name => name.endsWith('.md'));
+    const validCategories = ['Business Objective', 'Engineering Architecture', 'Ingestion', 'Retrieval', 'Generation', 'Evaluation', 'Prompt Tuning', 'Agentic Workflow'];
+    const allPosts: BlogPost[] = [];
 
-          const categoryPosts = await Promise.all(
-            markdownFiles.map(async (fileName) => {
-              const filePath = path.join(categoryPath, fileName);
-              const fileContents = fs.readFileSync(filePath, 'utf8');
-              
-              // Parse front matter
-              const { data, content } = matter(fileContents);
-              
-              // Extract metadata with defaults and validation
-              const slug = data.slug || fileName.replace('.md', '');
-              const title = data.title || this.extractTitleFromContent(content) || this.parseFilenameTitle(fileName);
-              
-              const date = data.date ? new Date(data.date) : new Date();
-              const summary = data.summary || this.extractSummary(content);
-              
-              // Process markdown content to HTML with LaTeX support
-              const htmlContent = await this.markdownToHtml(content);
-              
-              return {
-                id: slug,
-                title,
-                content: htmlContent,
-                category: category as BlogCategory,
-                date,
-                slug,
-                summary,
-                tags: data.tags || [],
-                author: data.author || 'Haoyang Han',
-              } as BlogPost;
-            })
-          );
-          
-          allPosts.push(...categoryPosts);
-        }
-      }
+    // Read from category folders
+    for (const category of validCategories) {
+      const categoryPath = path.join(this.postsDirectory, category);
+      
+      if (fs.existsSync(categoryPath) && fs.statSync(categoryPath).isDirectory()) {
+        const categoryFiles = fs.readdirSync(categoryPath);
+        const markdownFiles = categoryFiles.filter(name => name.endsWith('.md'));
 
-      // Also check for any remaining files in the root posts directory (legacy support)
-      const rootFiles = fs.readdirSync(this.postsDirectory);
-      const rootMarkdownFiles = rootFiles.filter(name => 
-        name.endsWith('.md') && 
-        fs.statSync(path.join(this.postsDirectory, name)).isFile()
-      );
-
-      if (rootMarkdownFiles.length > 0) {
-        const rootPosts = await Promise.all(
-          rootMarkdownFiles.map(async (fileName) => {
-            const filePath = path.join(this.postsDirectory, fileName);
+        const categoryPosts = await Promise.all(
+          markdownFiles.map(async (fileName) => {
+            const filePath = path.join(categoryPath, fileName);
             const fileContents = fs.readFileSync(filePath, 'utf8');
             
             // Parse front matter
@@ -111,9 +107,6 @@ export class FileBlogService {
             // Extract metadata with defaults and validation
             const slug = data.slug || fileName.replace('.md', '');
             const title = data.title || this.extractTitleFromContent(content) || this.parseFilenameTitle(fileName);
-            
-            // Use category from front matter or default to 'Uncategorized'
-            const category = data.category && validCategories.includes(data.category) ? data.category : 'Uncategorized';
             
             const date = data.date ? new Date(data.date) : new Date();
             const summary = data.summary || this.extractSummary(content);
@@ -131,19 +124,87 @@ export class FileBlogService {
               summary,
               tags: data.tags || [],
               author: data.author || 'Haoyang Han',
+              knowledgeBase: 'rag' as KnowledgeBase,
             } as BlogPost;
           })
         );
         
-        allPosts.push(...rootPosts);
+        allPosts.push(...categoryPosts);
       }
+    }
 
-      // Sort posts by date (newest first)
-      return allPosts.sort((a, b) => b.date.getTime() - a.date.getTime());
-    } catch (error) {
-      console.error('Error loading posts from files:', error);
+    return allPosts;
+  }
+
+  /**
+   * Get statistical foundation posts from the llm_foundation_posts directory
+   */
+  private static async getFoundationPosts(): Promise<BlogPost[]> {
+    // Check if foundation posts directory exists
+    if (!fs.existsSync(this.foundationPostsDirectory)) {
+      console.log('Foundation posts directory not found');
       return [];
     }
+
+    const allPosts: BlogPost[] = [];
+
+    // Recursively find all markdown files in the foundation directory
+    const findMarkdownFiles = (dir: string): string[] => {
+      const files: string[] = [];
+      const items = fs.readdirSync(dir);
+      
+      for (const item of items) {
+        const fullPath = path.join(dir, item);
+        const stat = fs.statSync(fullPath);
+        
+        if (stat.isDirectory()) {
+          files.push(...findMarkdownFiles(fullPath));
+        } else if (item.endsWith('.md')) {
+          files.push(fullPath);
+        }
+      }
+      
+      return files;
+    };
+
+    const markdownFiles = findMarkdownFiles(this.foundationPostsDirectory);
+
+    const foundationPosts = await Promise.all(
+      markdownFiles.map(async (filePath) => {
+        const fileContents = fs.readFileSync(filePath, 'utf8');
+        
+        // Parse front matter
+        const { data, content } = matter(fileContents);
+        
+        // Extract metadata with defaults and validation
+        const fileName = path.basename(filePath);
+        const slug = data.slug || fileName.replace('.md', '');
+        const title = data.title || this.extractTitleFromContent(content) || this.parseFilenameTitle(fileName);
+        
+        const date = data.date ? new Date(data.date) : new Date();
+        const summary = data.summary || this.extractSummary(content);
+        
+        // Process markdown content to HTML with LaTeX support
+        const htmlContent = await this.markdownToHtml(content);
+        
+        return {
+          id: slug,
+          title,
+          content: htmlContent,
+          category: (data.category as BlogCategory) || 'Statistical Deep Dive',
+          date,
+          slug,
+          summary,
+          tags: data.tags || [],
+          author: data.author || 'Haoyang Han',
+          knowledgeBase: 'foundations' as KnowledgeBase,
+        } as BlogPost;
+      })
+    );
+    
+    allPosts.push(...foundationPosts);
+
+    return allPosts;
   }
 
   /**
@@ -157,6 +218,19 @@ export class FileBlogService {
     }
     
     return allPosts.filter(post => post.category === category);
+  }
+
+  /**
+   * Get posts filtered by category and knowledge base
+   */
+  static async getPostsByCategoryAndKnowledgeBase(category: BlogCategory, knowledgeBase: KnowledgeBase): Promise<BlogPost[]> {
+    const posts = await this.getPostsByKnowledgeBase(knowledgeBase);
+    
+    if (category === 'All') {
+      return posts;
+    }
+    
+    return posts.filter(post => post.category === category);
   }
 
   /**

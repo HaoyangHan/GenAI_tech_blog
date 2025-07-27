@@ -7,7 +7,11 @@ slug: "tinyrag-engineering-deep-dive-qa"
 tags: ["RAG", "Engineering", "Architecture", "ChromaDB", "Redis", "Dramatiq", "Vector Database", "Performance Optimization", "Async Processing", "Metadata Extraction"]
 author: "Haoyang Han"
 
+**📚 Previous Article in Series:**  
+← [Getting Started with RAG Implementation](/post/getting-started-with-rag)
+
 -----
+
 
 In our last post, [**"Building a Production-Ready, Asynchronous Ingestion Pipeline for Complex Financial Documents,"**](https://www.google.com/search?q=https://tinybird.co/blog/rag-ingestion-pipeline-for-financial-documents) we detailed the core architecture of TinyRAG's data foundation. The response was fantastic, and it sparked a number of excellent, specific questions about our engineering decisions.
 
@@ -212,6 +216,7 @@ def enqueue_document_processing(document_id: str, chunks: list):
 ```
 
 This architecture allows us to process dozens of chunks in parallel, dramatically reducing the total ingestion time.
+
 
 ## Conclusion
 

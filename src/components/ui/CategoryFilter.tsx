@@ -6,12 +6,17 @@ import { cn } from '@/lib/utils';
 interface CategoryFilterProps {
   selectedCategory: BlogCategory;
   onCategoryChange: (category: BlogCategory) => void;
+  availableCategories?: BlogCategory[];
 }
 
-export default function CategoryFilter({ selectedCategory, onCategoryChange }: CategoryFilterProps) {
+export default function CategoryFilter({ 
+  selectedCategory, 
+  onCategoryChange, 
+  availableCategories = BLOG_CATEGORIES 
+}: CategoryFilterProps) {
   return (
     <div className="flex flex-wrap gap-2 mb-8">
-      {BLOG_CATEGORIES.map((category) => (
+      {availableCategories.map((category) => (
         <button
           key={category}
           onClick={() => onCategoryChange(category)}
