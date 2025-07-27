@@ -1,6 +1,6 @@
 ---
 title: "2.6 Activation Function"
-category: "Statistical Deep Dive"
+category: "LLM Model Architecture"
 date: "July 27, 2025"
 summary: "Data science foundations covering 2.6 activation function with theoretical insights and practical applications."
 slug: "26-activation-function"

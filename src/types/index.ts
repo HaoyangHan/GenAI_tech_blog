@@ -24,8 +24,15 @@ export type BlogCategory =
   | 'Evaluation'
   | 'Prompt Tuning'
   | 'Agentic Workflow'
-  // Statistical Deep Dive Category
-  | 'Statistical Deep Dive'
+  // Foundation Categories
+  | 'LLM Base Knowledge'
+  | 'LLM Model Architecture'
+  | 'Training Data'
+  | 'Fine Tuning'
+  | 'RAG'
+  | 'LLM Evaluation'
+  | 'Traditional ML'
+  | 'Statistical Deep Dive' // Keep for backward compatibility
   | 'Uncategorized';
 
 export const RAG_CATEGORIES: BlogCategory[] = [
@@ -42,7 +49,13 @@ export const RAG_CATEGORIES: BlogCategory[] = [
 
 export const FOUNDATION_CATEGORIES: BlogCategory[] = [
   'All',
-  'Statistical Deep Dive',
+  'LLM Base Knowledge',
+  'LLM Model Architecture',
+  'Training Data',
+  'Fine Tuning',
+  'RAG',
+  'LLM Evaluation',
+  'Traditional ML',
 ];
 
 export const BLOG_CATEGORIES: BlogCategory[] = [
@@ -55,6 +68,13 @@ export const BLOG_CATEGORIES: BlogCategory[] = [
   'Evaluation',
   'Prompt Tuning',
   'Agentic Workflow',
+  'LLM Base Knowledge',
+  'LLM Model Architecture',
+  'Training Data',
+  'Fine Tuning',
+  'RAG',
+  'LLM Evaluation',
+  'Traditional ML',
   'Statistical Deep Dive',
   'Uncategorized',
 ];

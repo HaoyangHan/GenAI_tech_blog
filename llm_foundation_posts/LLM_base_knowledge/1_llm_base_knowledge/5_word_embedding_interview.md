@@ -1,6 +1,6 @@
 ---
 title: "5 Word Embedding Interview"
-category: "Statistical Deep Dive"
+category: "LLM Base Knowledge"
 date: "July 27, 2025"
 summary: "Data science foundations covering 5 word embedding interview with theoretical insights and practical applications."
 slug: "5-word-embedding-interview"

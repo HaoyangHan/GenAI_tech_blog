@@ -1,6 +1,6 @@
 ---
 title: "4.4 Lora"
-category: "Statistical Deep Dive"
+category: "Fine Tuning"
 date: "July 27, 2025"
 summary: "Data science foundations covering 4.4 lora with theoretical insights and practical applications."
 slug: "44-lora"

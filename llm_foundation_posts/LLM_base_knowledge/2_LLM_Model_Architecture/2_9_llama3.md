@@ -1,6 +1,6 @@
 ---
 title: "2.9 Llama3"
-category: "Statistical Deep Dive"
+category: "LLM Model Architecture"
 date: "July 27, 2025"
 summary: "Data science foundations covering 2.9 llama3 with theoretical insights and practical applications."
 slug: "29-llama3"

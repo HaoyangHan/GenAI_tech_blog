@@ -1,6 +1,6 @@
 ---
 title: "4.5 Conclusion"
-category: "Statistical Deep Dive"
+category: "Fine Tuning"
 date: "July 27, 2025"
 summary: "Data science foundations covering 4.5 conclusion with theoretical insights and practical applications."
 slug: "45-conclusion"

@@ -1,6 +1,6 @@
 ---
 title: "1.1 Foundations"
-category: "Statistical Deep Dive"
+category: "LLM Base Knowledge"
 date: "July 27, 2025"
 summary: "Data science foundations covering 1.1 foundations with theoretical insights and practical applications."
 slug: "11-foundations"

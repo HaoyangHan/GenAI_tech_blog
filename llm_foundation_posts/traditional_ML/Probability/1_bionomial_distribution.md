@@ -1,6 +1,6 @@
 ---
 title: "1 Bionomial Distribution"
-category: "Statistical Deep Dive"
+category: "Traditional ML"
 date: "July 27, 2025"
 summary: "Comprehensive guide to 1 bionomial distribution including mathematical foundations, statistical theory, and practical applications in data science."
 slug: "1-bionomial-distribution"

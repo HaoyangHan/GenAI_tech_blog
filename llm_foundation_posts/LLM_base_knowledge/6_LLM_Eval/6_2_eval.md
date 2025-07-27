@@ -1,6 +1,6 @@
 ---
 title: "6.2 Eval"
-category: "Statistical Deep Dive"
+category: "LLM Evaluation"
 date: "July 27, 2025"
 summary: "Data science foundations covering 6.2 eval with theoretical insights and practical applications."
 slug: "62-eval"

@@ -1,6 +1,6 @@
 ---
 title: "2 Tokenization In Practice"
-category: "Statistical Deep Dive"
+category: "LLM Base Knowledge"
 date: "July 27, 2025"
 summary: "Data science foundations covering 2 tokenization in practice with theoretical insights and practical applications."
 slug: "2-tokenization-in-practice"

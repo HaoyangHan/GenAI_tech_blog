@@ -1,6 +1,6 @@
 ---
 title: "4 Syntactic Parsing"
-category: "Statistical Deep Dive"
+category: "LLM Base Knowledge"
 date: "July 27, 2025"
 summary: "Data science foundations covering 4 syntactic parsing with theoretical insights and practical applications."
 slug: "4-syntactic-parsing"

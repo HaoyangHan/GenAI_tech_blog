@@ -1,6 +1,6 @@
 ---
 title: "1.2 Tokenization"
-category: "Statistical Deep Dive"
+category: "LLM Base Knowledge"
 date: "July 27, 2025"
 summary: "Data science foundations covering 1.2 tokenization with theoretical insights and practical applications."
 slug: "12-tokenization"

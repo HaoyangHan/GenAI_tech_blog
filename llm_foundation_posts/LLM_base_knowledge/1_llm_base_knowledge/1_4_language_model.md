@@ -1,6 +1,6 @@
 ---
 title: "1.4 Language Model"
-category: "Statistical Deep Dive"
+category: "LLM Base Knowledge"
 date: "July 27, 2025"
 summary: "Deep dive into 1.4 language model covering theoretical foundations and practical applications in modern large language models and generative AI systems."
 slug: "14-language-model"

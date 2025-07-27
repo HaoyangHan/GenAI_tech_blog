@@ -1,6 +1,6 @@
 ---
 title: "6.1 Hallunication"
-category: "Statistical Deep Dive"
+category: "LLM Evaluation"
 date: "July 27, 2025"
 summary: "Data science foundations covering 6.1 hallunication with theoretical insights and practical applications."
 slug: "61-hallunication"

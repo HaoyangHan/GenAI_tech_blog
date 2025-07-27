@@ -1,6 +1,6 @@
 ---
 title: "5.2 Agentic RAG"
-category: "Statistical Deep Dive"
+category: "RAG"
 date: "July 27, 2025"
 summary: "Data science foundations covering 5.2 agentic rag with theoretical insights and practical applications."
 slug: "52-agentic-rag"

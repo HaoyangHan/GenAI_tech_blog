@@ -1,6 +1,6 @@
 ---
 title: "1 MOE"
-category: "Statistical Deep Dive"
+category: "LLM Model Architecture"
 date: "July 27, 2025"
 summary: "Data science foundations covering 1 moe with theoretical insights and practical applications."
 slug: "1-moe"

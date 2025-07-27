@@ -1,6 +1,6 @@
 ---
 title: "5.3 Search Enhanced RAG"
-category: "Statistical Deep Dive"
+category: "RAG"
 date: "July 27, 2025"
 summary: "Data science foundations covering 5.3 search enhanced rag with theoretical insights and practical applications."
 slug: "53-search-enhanced-rag"

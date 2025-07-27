@@ -1,6 +1,6 @@
 ---
 title: "2 Imbalanced Data"
-category: "Statistical Deep Dive"
+category: "Traditional ML"
 date: "July 27, 2025"
 summary: "Data science foundations covering 2 imbalanced data with theoretical insights and practical applications."
 slug: "2-imbalanced-data"

@@ -1,6 +1,6 @@
 ---
 title: "4.3 Adapter Tuning"
-category: "Statistical Deep Dive"
+category: "Fine Tuning"
 date: "July 27, 2025"
 summary: "Data science foundations covering 4.3 adapter tuning with theoretical insights and practical applications."
 slug: "43-adapter-tuning"

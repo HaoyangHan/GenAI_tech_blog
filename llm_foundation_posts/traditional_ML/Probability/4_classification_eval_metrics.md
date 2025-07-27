@@ -1,6 +1,6 @@
 ---
 title: "4 Classification Eval Metrics"
-category: "Statistical Deep Dive"
+category: "Traditional ML"
 date: "July 27, 2025"
 summary: "Comprehensive guide to 4 classification eval metrics including mathematical foundations, statistical theory, and practical applications in data science."
 slug: "4-classification-eval-metrics"

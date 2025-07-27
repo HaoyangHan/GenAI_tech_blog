@@ -1,6 +1,6 @@
 ---
 title: "3 Part Of Speech Tagging"
-category: "Statistical Deep Dive"
+category: "LLM Base Knowledge"
 date: "July 27, 2025"
 summary: "Data science foundations covering 3 part of speech tagging with theoretical insights and practical applications."
 slug: "3-part-of-speech-tagging"

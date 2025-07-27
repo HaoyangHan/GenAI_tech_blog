@@ -1,6 +1,6 @@
 ---
 title: "5.1 Basic"
-category: "Statistical Deep Dive"
+category: "RAG"
 date: "July 27, 2025"
 summary: "Data science foundations covering 5.1 basic with theoretical insights and practical applications."
 slug: "51-basic"

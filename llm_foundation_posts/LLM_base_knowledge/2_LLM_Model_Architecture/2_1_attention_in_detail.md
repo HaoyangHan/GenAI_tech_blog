@@ -1,6 +1,6 @@
 ---
 title: "2.1 Attention In Detail"
-category: "Statistical Deep Dive"
+category: "LLM Model Architecture"
 date: "July 27, 2025"
 summary: "Deep dive into 2.1 attention in detail covering theoretical foundations and practical applications in modern large language models and generative AI systems."
 slug: "21-attention-in-detail"

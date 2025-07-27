@@ -1,6 +1,6 @@
 ---
 title: "3 Eval Metrics"
-category: "Statistical Deep Dive"
+category: "Traditional ML"
 date: "July 27, 2025"
 summary: "Comprehensive guide to 3 eval metrics including mathematical foundations, statistical theory, and practical applications in data science."
 slug: "3-eval-metrics"

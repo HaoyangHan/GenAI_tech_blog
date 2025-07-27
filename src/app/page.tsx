@@ -36,7 +36,7 @@ export default function HomePage() {
             A comprehensive resource for modern AI practitioners, covering both the 
             <span className="font-semibold text-blue-600"> practical implementation of RAG systems</span> and the 
             <span className="font-semibold text-purple-600"> theoretical foundations of data science</span>.
-            Whether you're building production AI systems or deepening your mathematical understanding, 
+            Whether you&apos;re building production AI systems or deepening your mathematical understanding, 
             find the knowledge you need to excel.
           </p>
         </section>

@@ -1,6 +1,6 @@
 ---
 title: "0 Math Expectations"
-category: "Statistical Deep Dive"
+category: "Traditional ML"
 date: "July 27, 2025"
 summary: "Data science foundations covering 0 math expectations with theoretical insights and practical applications."
 slug: "0-math-expectations"

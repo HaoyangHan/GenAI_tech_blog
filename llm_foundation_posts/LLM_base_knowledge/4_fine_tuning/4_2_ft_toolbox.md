@@ -1,6 +1,6 @@
 ---
 title: "4.2 Ft Toolbox"
-category: "Statistical Deep Dive"
+category: "Fine Tuning"
 date: "July 27, 2025"
 summary: "Data science foundations covering 4.2 ft toolbox with theoretical insights and practical applications."
 slug: "42-ft-toolbox"

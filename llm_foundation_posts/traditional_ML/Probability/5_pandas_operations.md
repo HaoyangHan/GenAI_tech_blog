@@ -1,6 +1,6 @@
 ---
 title: "5 Pandas Operations"
-category: "Statistical Deep Dive"
+category: "Traditional ML"
 date: "July 27, 2025"
 summary: "Essential knowledge on 5 pandas operations covering core concepts, algorithms, and hands-on implementation techniques for data science practitioners."
 slug: "5-pandas-operations"

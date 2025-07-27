@@ -1,6 +1,6 @@
 ---
 title: "4.2 Pre Training Basic"
-category: "Statistical Deep Dive"
+category: "Fine Tuning"
 date: "July 27, 2025"
 summary: "Data science foundations covering 4.2 pre training basic with theoretical insights and practical applications."
 slug: "42-pre-training-basic"

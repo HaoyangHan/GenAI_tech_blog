@@ -1,6 +1,6 @@
 ---
 title: "2.10 Decoding Strategy"
-category: "Statistical Deep Dive"
+category: "LLM Model Architecture"
 date: "July 27, 2025"
 summary: "Data science foundations covering 2.10 decoding strategy with theoretical insights and practical applications."
 slug: "210-decoding-strategy"

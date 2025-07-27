@@ -1,6 +1,6 @@
 ---
 title: "7 Other ML Concepts"
-category: "Statistical Deep Dive"
+category: "Traditional ML"
 date: "July 27, 2025"
 summary: "Essential knowledge on 7 other ml concepts covering core concepts, algorithms, and hands-on implementation techniques for data science practitioners."
 slug: "7-other-ml-concepts"

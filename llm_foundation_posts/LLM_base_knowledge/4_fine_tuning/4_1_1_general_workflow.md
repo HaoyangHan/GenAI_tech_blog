@@ -1,6 +1,6 @@
 ---
 title: "4.1 1 General Workflow"
-category: "Statistical Deep Dive"
+category: "Fine Tuning"
 date: "July 27, 2025"
 summary: "Data science foundations covering 4.1 1 general workflow with theoretical insights and practical applications."
 slug: "41-1-general-workflow"

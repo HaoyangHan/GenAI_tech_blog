@@ -1,6 +1,6 @@
 ---
 title: "Training Data"
-category: "Statistical Deep Dive"
+category: "Training Data"
 date: "July 27, 2025"
 summary: "Data science foundations covering training data with theoretical insights and practical applications."
 slug: "training-data"
