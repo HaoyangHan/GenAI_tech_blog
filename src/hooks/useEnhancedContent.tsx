@@ -99,11 +99,19 @@ export function useEnhancedContent(htmlContent: string) {
       const buttonContainer = document.createElement('div');
       
       if (math.classList.contains('math-display')) {
-        // For display math, use improved positioning strategy
-        buttonContainer.className = 'copy-button-container math-copy-btn';
-        (math as HTMLElement).style.position = 'relative';
-        math.classList.add('group');
-        math.appendChild(buttonContainer);
+        // For display math, position button inside the scrolling container
+        buttonContainer.className = 'copy-button-container absolute top-2 right-2 z-10';
+        const katexDisplay = math.querySelector('.katex-display');
+        if (katexDisplay) {
+          (katexDisplay as HTMLElement).style.position = 'relative';
+          math.classList.add('group');
+          katexDisplay.appendChild(buttonContainer);
+        } else {
+          // Fallback to original behavior
+          (math as HTMLElement).style.position = 'relative';
+          math.classList.add('group');
+          math.appendChild(buttonContainer);
+        }
       } else {
         // For inline math, position inline
         buttonContainer.className = 'copy-button-container inline-block ml-1 align-middle';
