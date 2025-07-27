@@ -253,7 +253,12 @@ async def handle_query(request: QueryRequest):
 
 We have architected **TinyRAG**, a production-grade financial RAG system that prioritizes scale, reliability, and trustworthiness. By using a <span style="color: #34A853;">decoupled web-queue-worker pattern</span>, enforcing a <span style="color: #34A853;">strong data contract</span>, and building a <span style="color: #34A853;">quantitative evaluation framework</span>, we have laid a foundation that moves far beyond a simple prototype.
 
-This is just the beginning. The next post in this series will dive deeper into one of the most critical parts of the pipeline: **Advanced Retrieval Strategies**. We will explore how to implement and evaluate a `CohereReRank` step to dramatically improve `Context Precision`, ensuring our generation model receives only the most relevant, highest-quality information to craft its answers.
+This is just the beginning. Next, we'll see how this robust architecture translates into an intuitive [**user experience**](/post/tinyrag-user-journey-mvp-workflow), followed by a deep dive into [**Advanced Retrieval Strategies**](/post/retrieval-strategies-in-financial-rag). We will explore how to implement and evaluate a `CohereReRank` step to dramatically improve `Context Precision`, ensuring our generation model receives only the most relevant, highest-quality information to craft its answers.
+
+---
+
+**📚 Continue the Journey:**  
+→ [TinyRAG User Journey: From Login to AI-Powered Insights](/post/tinyrag-user-journey-mvp-workflow)
 
 ---
 ### Sourcing and Further Reading
