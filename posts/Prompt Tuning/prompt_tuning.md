@@ -1,5 +1,20 @@
 # Architecting Cross-Model Consistency: A Deep Dive into Model Selection and Prompt Engineering for Enterprise RAG
 
+
+
+**📚 Previous Article in Series:**  
+← [TinyRAG Ingestion Deep Dive: Your Questions Answered](/post/tinyrag-engineering-deep-dive-qa)
+
+This article would introduce some key methods implemented to improve prompt efficiency.
+
+The general idea behind prompt and model selection is unified - we are going to use the best model and enhance the model's ability by prompt tuning. Because of the limitation of a big financial institution, some models are restricted to certain geographical entities. We need to make sure prompts have unified result generated cross different model selected for different metrics.
+
+Since this RAG process is highly instructed, where user don't have any flexibility to modify the prompt till the first round of the generation finish, design a robust and consistent prompt series is essential. This is very related to the evaluation criteria we designed. In general all model + prompt combo(a strategy)'s evaluation score should be aligned(no statistically significant difference).
+
+
+
+All implemtation is based on beanie, mongodb, and llama index.
+
 ## Introduction
 
 The proliferation of Large Language Models (LLMs) has moved the enterprise AI conversation beyond simple proof-of-concept chatbots. For global financial institutions, the deployment of such technology is not a matter of choosing a single "best" model, but of orchestrating a diverse and geographically distributed fleet of models. This reality is dictated by a complex interplay of performance requirements, cost considerations, data sovereignty laws, and the geopolitical landscape that governs technology access. Reliance on a single model family or vendor introduces an unacceptable level of operational, financial, and compliance risk. The central challenge, therefore, is not merely using an LLM, but architecting a resilient system that can deliver consistent, verifiable, and compliant results across a heterogeneous model landscape.
@@ -10,7 +25,7 @@ The technical foundation for this architecture is a carefully selected stack of 
 
 -----
 
-## Section 1: A Strategic Framework for Model Selection in Finance
+## Section 1: A Strategic Framework for Model Selection in TinyRAG
 
 The selection of models within an enterprise AI ecosystem cannot be an ad-hoc or static decision. It must be a dynamic, strategy-driven process that aligns with the specific constraints and objectives of a global financial institution. This involves a deep understanding of the available model landscape, a clear-eyed assessment of their performance against operational requirements, and a tiered allocation strategy that optimizes for capability, cost, and compliance across different geographical regions.
 
@@ -594,27 +609,53 @@ You are an expert AI Prompt Engineer. Your task is to take a user-provided task 
       * The prompt must provide the exact JSON schema, including field names, data types, and nesting.
       * The prompt must explicitly forbid the LLM from wrapping the JSON in markdown code blocks (json... \`\`\`) or adding any extraneous text.
 
-**Structure of Your Generated Prompt:**
+**Sample Meta Prompt from OpenAI:**
 
-Your final output must be ONLY the generated system prompt, following this structure precisely:
+```python
+OpenAI_meta_prompt = """
+# Guidelines
 
-[Concise, one-sentence instruction describing the core task.]
+- Understand the Task: Grasp the main objective, goals, requirements, constraints, and expected output.
+- Minimal Changes: If an existing prompt is provided, improve it only if it's simple. For complex prompts, enhance clarity and add missing elements without altering the original structure.
+- Reasoning Before Conclusions**: Encourage reasoning steps before any conclusions are reached. ATTENTION! If the user provides examples where the reasoning happens afterward, REVERSE the order! NEVER START EXAMPLES WITH CONCLUSIONS!
+    - Reasoning Order: Call out reasoning portions of the prompt and conclusion parts (specific fields by name). For each, determine the ORDER in which this is done, and whether it needs to be reversed.
+    - Conclusion, classifications, or results should ALWAYS appear last.
+- Examples: Include high-quality examples if helpful, using placeholders [in brackets] for complex elements.
+   - What kinds of examples may need to be included, how many, and whether they are complex enough to benefit from placeholders.
+- Clarity and Conciseness: Use clear, specific language. Avoid unnecessary instructions or bland statements.
+- Formatting: Use markdown features for readability. DO NOT USE ``` CODE BLOCKS UNLESS SPECIFICALLY REQUESTED.
+- Preserve User Content: If the input task or prompt includes extensive guidelines or examples, preserve them entirely, or as closely as possible. If they are vague, consider breaking down into sub-steps. Keep any details, guidelines, examples, variables, or placeholders provided by the user.
+- Constants: DO include constants in the prompt, as they are not susceptible to prompt injection. Such as guides, rubrics, and examples.
+- Output Format: Explicitly the most appropriate output format, in detail. This should include length and syntax (e.g. short sentence, paragraph, JSON, etc.)
+    - For tasks outputting well-defined or structured data (classification, JSON, etc.) bias toward outputting a JSON.
+    - JSON should never be wrapped in code blocks (```) unless explicitly requested.
 
-[Additional details or context as needed.]
+The final prompt you output should adhere to the following structure below. Do not include any additional commentary, only output the completed system prompt. SPECIFICALLY, do not include any additional messages at the start or end of the prompt. (e.g. no "---")
 
-# Steps [Optional]
+[Concise instruction describing the task - this should be the first line in the prompt, no section header]
 
-[A detailed, numbered breakdown of the steps the LLM must follow.]
+[Additional details as needed.]
+
+[Optional sections with headings or bullet points for detailed steps.]
+
+# Steps [optional]
+
+[optional: a detailed breakdown of the steps necessary to accomplish the task]
 
 # Output Format
 
-# Examples [Optional]
+[Specifically call out how the output should be formatted, be it response length, structure e.g. JSON, markdown, etc]
 
-[1-3 well-defined examples showing input and the corresponding, correctly formatted output.]
+# Examples [optional]
 
-# Notes [Optional]
+[Optional: 1-3 well-defined examples with placeholders if necessary. Clearly mark where examples start and end, and what the input and output are. User placeholders as necessary.]
+[If the examples are shorter than what a realistic example is expected to be, make a reference with () explaining how real examples should be longer / shorter / different. AND USE PLACEHOLDERS! ]
 
-[A section for edge cases, important considerations, or repeating critical constraints.]
+# Notes [optional]
+
+[optional: edge cases, details, and an area to call or repeat out specific important considerations]
+"""
+```
 
 -----
 

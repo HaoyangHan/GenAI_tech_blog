@@ -1,5 +1,5 @@
 -----
-title: "TinyRAG Engineering Deep Dive: Your Questions Answered"
+title: "TinyRAG Ingestion Deep Dive: Your Questions Answered"
 category: "Technical Deep Dive"
 date: "July 27, 2025"
 summary: "A comprehensive Q&A follow-up addressing key engineering decisions in TinyRAG's ingestion pipeline, including chunk size optimization, performance metrics, database selection trade-offs, metadata extraction strategies, and asynchronous processing architecture using Dramatiq and Redis."
