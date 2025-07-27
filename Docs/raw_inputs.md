@@ -313,13 +313,51 @@ https://docs.llamaindex.ai/en/stable/examples/low_level/fusion_retriever/
 
 
 
+
+
 # Engineering Components
+I would want to discuss following components for Engineering:
+1. Mongodb schema design
+2. Dramatiq + redis parallel processing for ingestion and generation.
+3. Monorepo and fastapi deployment
+
+1. mongodb schema design
+    The user's landing page should be a Project, which contains all the components for this RAG generation.
+
+    a tenant is a use case, we can use tenant to track user traffic, activity and budget saving. one project have only one tenant. sample tenant: Memo generation, HR, search engine, infrastructure.
+
+    A Document contains file information like type, binary file. the document id would link to a project id and it has a IngestionStatus which can be not started, pending, in progress, complete, or failed.
+
+    An element is the place to store one prompt. Each element would have an tenant and a project id connected. Those prompts that are not used in real time would be saved with tenant infrastructure.
+
+    An ElementGeneration contains the chunks, chunk-id, generation result(llm response), and linked to element id, project id. one element can have multiple round of element generation.
+
+    an evaluation is associated with a project's overll behavior, thus connected to project id. it would contain a list of the evaluation results for each element generation, and a summarized attribute. Some evaluation attributes including:
+         Retrieval: Accuracy, Recall, Weight Adjusted position based score.
+         Generation: Hallunication, value-add-on, missing-out, captured. the consistency(evaluate the generation quality compares to average indicating whether is generation is an outlier)
+
+    Draw a flow for this session.
+
+2. Dramatiq + redis parallel processing for ingestion and generation.
+    It would be basically impossible to create live generation experience(total time less than 3 minutes) if we don't async process the ingestion and generation for RAG. 16 core processor would be implemented. In production we have more.
+
+3. Monorepo and fastapi deployment
+    We use the monorepo, where frontend, backend was deployed together in one place.
+    fastapi: grouping by sub route of function and interaction with mongodb, like project, document, etc.
+
+
+
 
 
 
 # Retrieval
 
-The basic idea is to create customized retrieval strategy. We are going to choose between different methods that I'll explain later
+The basic idea is to create customized retrieval strategy. We are going to choose between different methods that I'll explain later to optimize the retrieval result.
+
+1. Raw approach
+
+using the 2000k token prompt, retrieve the most relevant 100 chunks using the bge embedding large model to embedding. Calculate cosine similarity.
+Using the metadata we previously extracted about date
 
 
 # Evaluation

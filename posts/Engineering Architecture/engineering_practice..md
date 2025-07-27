@@ -249,56 +249,6 @@ async def handle_query(request: QueryRequest):
     return StreamingResponse(event_generator(), media_type="text/plain")
 ```
 
-### 4. Implementation: Quantitative Evaluation with Ragas
-
-For a financial system, *hope is not a strategy*. We must quantitatively measure performance. The open-source `ragas` library provides metrics to evaluate the two pillars of RAG: **Retrieval** and **Generation**.
-
-| Metric Category | Metric Name | Why it Matters for TinyRAG |
-| :--- | :--- | :--- |
-| Retrieval | `Context Precision` | Prevents the LLM from being distracted by irrelevant financial data or boilerplate text. |
-| Retrieval | `Context Recall` | Ensures the answer is comprehensive and doesn't omit critical data like a specific risk factor. |
-| Generation | `Faithfulness` | **The most critical metric.** Directly penalizes hallucination of financial figures, dates, or events. |
-| Generation | `Answer Relevancy` | Ensures the system directly answers the user's specific financial question. |
-
-This evaluation script provides a framework for creating a "golden dataset" and scoring our system's performance. The resulting scores transform system tuning from guesswork into data-driven engineering.
-
-```python
-# evaluate.py
-import os
-from datasets import Dataset
-from ragas import evaluate
-from ragas.metrics import (
-    context_precision,
-    context_recall,
-    faithfulness,
-    answer_relevancy,
-)
-
-# In a real project, you'd populate 'contexts' and 'answer' by running your RAG system.
-# 'ground_truth' is the manually curated, ideal answer.
-def create_evaluation_dataset():
-    data = {
-        "question": ["What were the key risks mentioned for XYZ in 2023?"],
-        "contexts": [["Risk factor A...", "Risk factor B...", "Irrelevant section..."]],
-        "answer": ["The key risks were A and B."],
-        "ground_truth": ["The key risks for XYZ in 2023 were risk factor A and risk factor B."]
-    }
-    return Dataset.from_dict(data)
-
-def run_evaluation():
-    eval_dataset = create_evaluation_dataset()
-    metrics = [faithfulness, answer_relevancy, context_precision, context_recall]
-    
-    print("Running RAG evaluation...")
-    result = evaluate(dataset=eval_dataset, metrics=metrics)
-    print("Evaluation Results:")
-    print(result) # e.g., {'faithfulness': 0.95, ...}
-    return result
-
-if __name__ == "__main__":
-    run_evaluation()
-```
-
 ## Conclusion & Next Steps
 
 We have architected **TinyRAG**, a production-grade financial RAG system that prioritizes scale, reliability, and trustworthiness. By using a <span style="color: #34A853;">decoupled web-queue-worker pattern</span>, enforcing a <span style="color: #34A853;">strong data contract</span>, and building a <span style="color: #34A853;">quantitative evaluation framework</span>, we have laid a foundation that moves far beyond a simple prototype.
