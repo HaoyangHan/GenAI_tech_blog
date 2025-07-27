@@ -1,10 +1,13 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { FileBlogService } from '@/lib/file-blog-service';
 import { KnowledgeBase } from '@/types';
 
-export async function GET(request: Request) {
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic';
+
+export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const searchParams = request.nextUrl.searchParams;
     const category = searchParams.get('category');
     const knowledgeBase = searchParams.get('knowledgeBase') as KnowledgeBase;
 
