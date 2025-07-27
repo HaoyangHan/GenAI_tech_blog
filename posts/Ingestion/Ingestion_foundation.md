@@ -8,8 +8,8 @@ tags: ["RAG", "Ingestion", "Data Pipeline", "LlamaIndex", "ChromaDB", "MongoDB",
 author: "Haoyang Han"
 ---
 
-**📚 Next Article in Series:**  
-→ [TinyRAG Ingestion Deep Dive: Your Questions Answered](/post/tinyrag-engineering-deep-dive-qa)
+**📚 RAG Implementation Series - Article 3 of 9:**  
+[Complete Learning Path](/knowledge/rag) | ← [Previous: User Journey](/post/tinyrag-user-journey-mvp-workflow) | **Current: Ingestion Pipeline** → [Next: Engineering Deep Dive](/post/tinyrag-engineering-deep-dive-qa)
 
 
 ## Introduction: The Foundation of Insight
@@ -440,4 +440,11 @@ This dual-storage architecture gives us the best of both worlds: lightning-fast 
 
 The ingestion pipeline is the unsung hero of the TinyRAG system. By implementing an intelligent, multi-stage process—from semantic chunking to specialized handling of tables and images, rich metadata extraction, and a robust dual-storage backend—we build the high-quality foundation required for accurate and insightful generation. This meticulous preparation is what allows the retrieval system to find the true "alpha" hidden within the data.
 
-In our next article, we'll build on this foundation and dive deep into the retrieval process itself. We will explore **<u>"Advanced Retrieval and Reranking Strategies for High-Stakes Q&A,"</u>** detailing how we construct complex queries and leverage our reranking models to deliver the most relevant context to the LLM.
+In our next article, we'll build on this foundation and explore the engineering decisions behind our ingestion choices.
+
+---
+
+**📚 Continue Your RAG Journey:**  
+← **Previous:** [TinyRAG User Journey: From Login to AI-Powered Insights](/post/tinyrag-user-journey-mvp-workflow)  
+→ **Next:** [TinyRAG Ingestion Deep Dive: Your Questions Answered](/post/tinyrag-engineering-deep-dive-qa)  
+📋 **[View Complete Learning Path](/knowledge/rag)** | **Progress: 3/9 Complete** ✅✅✅

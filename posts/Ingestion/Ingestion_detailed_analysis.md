@@ -8,8 +8,8 @@ tags: ["RAG", "Engineering", "Architecture", "ChromaDB", "Redis", "Dramatiq", "V
 author: "Haoyang Han"
 ---
 
-**📚 Next Article in Series:**  
-← [Getting Started with RAG Implementation](/post/getting-started-with-rag)
+**📚 RAG Implementation Series - Article 4 of 9:**  
+[Complete Learning Path](/knowledge/rag) | ← [Previous: Ingestion Pipeline](/post/rag-ingestion-pipeline-for-financial-documents) | **Current: Engineering Q&A** → [Next: Multi-Model Strategy](/post/architecting-multi-model-rag-for-global-finance)
 
 In our last post, [**"Building a Production-Ready, Asynchronous Ingestion Pipeline for Complex Financial Documents,"**](https://www.google.com/search?q=https://tinybird.co/blog/rag-ingestion-pipeline-for-financial-documents) we detailed the core architecture of TinyRAG's data foundation. The response was fantastic, and it sparked a number of excellent, specific questions about our engineering decisions.
 
@@ -220,4 +220,11 @@ This architecture allows us to process dozens of chunks in parallel, dramaticall
 
 Building a production-ready RAG system is a game of deliberate trade-offs and thoughtful engineering. Every choice, from chunk size to database selection, has a cascading effect on performance, scalability, and retrieval quality. By sharing our reasoning, we hope to provide a clearer picture of what it takes to move from a simple RAG prototype to a robust, enterprise-grade system.
 
-Stay tuned for our next article, where we'll finally move up the stack to explore **"Advanced Retrieval and Reranking Strategies for High-Stakes Q\&A."**
+Stay tuned for our next article, where we'll explore multi-model strategies and prompt engineering for global finance.
+
+---
+
+**📚 Continue Your RAG Journey:**  
+← **Previous:** [Building a Production-Ready, Asynchronous Ingestion Pipeline](/post/rag-ingestion-pipeline-for-financial-documents)  
+→ **Next:** [Architecting Cross-Model Consistency: Model Selection & Prompt Engineering](/post/architecting-multi-model-rag-for-global-finance)  
+📋 **[View Complete Learning Path](/knowledge/rag)** | **Progress: 4/9 Complete** ✅✅✅✅

@@ -75,10 +75,132 @@ export default function RAGKnowledgePage() {
           <h1 className="text-4xl font-bold text-blue-600 mb-4">
             RAG Implementation Hub
           </h1>
-          <p className="text-lg text-gray-600 mb-6">
+          <p className="text-lg text-gray-600 mb-8">
             Complete journey from business objectives to production deployment of Retrieval-Augmented Generation systems. 
             Explore real-world implementation details, engineering decisions, and performance optimizations.
           </p>
+
+          {/* Learning Path Table of Contents */}
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border border-blue-200 mb-8">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+              <svg className="w-6 h-6 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              Complete Learning Path
+            </h2>
+            <p className="text-gray-600 mb-6">Follow this structured path to master production-ready RAG systems from concept to deployment.</p>
+            
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse bg-white rounded-lg shadow-sm">
+                <thead>
+                  <tr className="bg-blue-600 text-white">
+                    <th className="px-4 py-3 text-left font-semibold">#</th>
+                    <th className="px-4 py-3 text-left font-semibold">Article</th>
+                    <th className="px-4 py-3 text-left font-semibold">Category</th>
+                    <th className="px-4 py-3 text-left font-semibold">Focus</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  <tr className="hover:bg-blue-50 transition-colors">
+                    <td className="px-4 py-3 font-mono text-sm text-blue-600">01</td>
+                    <td className="px-4 py-3">
+                      <Link href="/post/agentic-rag-for-financial-memo-generation" className="text-blue-600 hover:text-blue-800 font-medium">
+                        The USD 156 Million Question: Architecting an Agentic RAG System
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-600">Business Objective</td>
+                    <td className="px-4 py-3 text-sm text-gray-600">ROI & Business Case</td>
+                  </tr>
+                  <tr className="hover:bg-blue-50 transition-colors">
+                    <td className="px-4 py-3 font-mono text-sm text-blue-600">02</td>
+                    <td className="px-4 py-3">
+                      <Link href="/post/tinyrag-user-journey-mvp-workflow" className="text-blue-600 hover:text-blue-800 font-medium">
+                        TinyRAG User Journey: From Login to AI-Powered Insights
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-600">Business Objective</td>
+                    <td className="px-4 py-3 text-sm text-gray-600">UX & User Workflow</td>
+                  </tr>
+                  <tr className="hover:bg-blue-50 transition-colors">
+                    <td className="px-4 py-3 font-mono text-sm text-blue-600">03</td>
+                    <td className="px-4 py-3">
+                      <Link href="/post/rag-ingestion-pipeline-for-financial-documents" className="text-blue-600 hover:text-blue-800 font-medium">
+                        Building a Production-Ready, Asynchronous Ingestion Pipeline
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-600">Ingestion</td>
+                    <td className="px-4 py-3 text-sm text-gray-600">Data Pipeline & Processing</td>
+                  </tr>
+                  <tr className="hover:bg-blue-50 transition-colors">
+                    <td className="px-4 py-3 font-mono text-sm text-blue-600">04</td>
+                    <td className="px-4 py-3">
+                      <Link href="/post/tinyrag-engineering-deep-dive-qa" className="text-blue-600 hover:text-blue-800 font-medium">
+                        TinyRAG Ingestion Deep Dive: Your Questions Answered
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-600">Ingestion</td>
+                    <td className="px-4 py-3 text-sm text-gray-600">Engineering Q&A</td>
+                  </tr>
+                  <tr className="hover:bg-blue-50 transition-colors">
+                    <td className="px-4 py-3 font-mono text-sm text-blue-600">05</td>
+                    <td className="px-4 py-3">
+                      <Link href="/post/architecting-multi-model-rag-for-global-finance" className="text-blue-600 hover:text-blue-800 font-medium">
+                        Architecting Cross-Model Consistency: Model Selection & Prompt Engineering
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-600">Prompt Tuning</td>
+                    <td className="px-4 py-3 text-sm text-gray-600">Multi-Model Strategy</td>
+                  </tr>
+                  <tr className="hover:bg-blue-50 transition-colors">
+                    <td className="px-4 py-3 font-mono text-sm text-blue-600">06</td>
+                    <td className="px-4 py-3">
+                      <Link href="/post/architecting-production-ready-financial-rag-system" className="text-blue-600 hover:text-blue-800 font-medium">
+                        Architecting TinyRAG: A Production-Ready Financial RAG System
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-600">Engineering Architecture</td>
+                    <td className="px-4 py-3 text-sm text-gray-600">System Design & Scalability</td>
+                  </tr>
+                  <tr className="hover:bg-blue-50 transition-colors">
+                    <td className="px-4 py-3 font-mono text-sm text-blue-600">07</td>
+                    <td className="px-4 py-3">
+                      <Link href="/post/retrieval-strategies-in-financial-rag" className="text-blue-600 hover:text-blue-800 font-medium">
+                        Retrieval Strategies: From Dense to Hybrid Approaches
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-600">Retrieval</td>
+                    <td className="px-4 py-3 text-sm text-gray-600">Search & Ranking</td>
+                  </tr>
+                  <tr className="hover:bg-blue-50 transition-colors">
+                    <td className="px-4 py-3 font-mono text-sm text-blue-600">08</td>
+                    <td className="px-4 py-3">
+                      <Link href="/post/framework-rigorous-evaluation-agentic-postprocessing-financial-rag" className="text-blue-600 hover:text-blue-800 font-medium">
+                        A Framework for Rigorous Evaluation and Agentic Post-Processing
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-600">Evaluation</td>
+                    <td className="px-4 py-3 text-sm text-gray-600">Quality Metrics & Testing</td>
+                  </tr>
+                  <tr className="hover:bg-blue-50 transition-colors">
+                    <td className="px-4 py-3 font-mono text-sm text-blue-600">09</td>
+                    <td className="px-4 py-3">
+                      <Link href="/post/agentic-post-processing-tinyrag" className="text-blue-600 hover:text-blue-800 font-medium">
+                        Agentic Post-Processing: Conditional, State-Driven Workflows
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-600">Agentic Workflow</td>
+                    <td className="px-4 py-3 text-sm text-gray-600">Autonomous Processing</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div className="mt-4 p-4 bg-blue-100 rounded-lg">
+              <p className="text-sm text-blue-800">
+                <strong>💡 Learning Tip:</strong> Follow this sequence for optimal understanding. Each article builds upon previous concepts and prepares you for the next challenge in production RAG development.
+              </p>
+            </div>
+          </div>
           
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">

@@ -353,16 +353,49 @@ I would want to discuss following components for Engineering:
 # Retrieval
 
 The basic idea is to create customized retrieval strategy. We are going to choose between different methods that I'll explain later to optimize the retrieval result.
+All based on llama index, python
 
 1. Raw approach
 
 using the 2000k token prompt, retrieve the most relevant 100 chunks using the bge embedding large model to embedding. Calculate cosine similarity.
-Using the metadata we previously extracted about date
+Using the metadata we previously extracted about date, type, keywords. Use those as extra score increase/decrease method.
+Reranking and get the top 8 or 16 chunks for generation.
+
+2. bm25 reranker
+using bm 25 reranker after 100 chunk retrieval, explain the benifit of using it, return 8/16 chunks
+give llama index implementation
+
+3. bge or qwen3 reranker.
+
+4. prompt fusion - decompose the complex prompt to some simple prompts, retrieval for each part, then using rerank model to combine and select final chunks
+
+5. prompt re-write
+change the complicated and unrelated part(like: you are acting as a financial analyst.....; just focus on the data for past year; output is markdown; here are some examples) should be cleaned. 
+use a meta prompt to re-write the generation prompt to retrieval prompt(easy, straightforward)
 
 
-# Evaluation
+# Evaluation and post processing
 
-Self-supervised LLM as a judge.
+Evaluation is basically 
+
+For retrieval evaluation, basically search or classification problem where we evaluate whether the chunks that contains important message correctly from retrival process.
+
+evaluate the original retrieval: human expert label 8 chunks that are most important by hand, we would see whether those chunks are in the 100 candidates. percision, recall, F1 other metrics if possible
+evaluate the reranking retrieval: similarly, but the candidate is 8/16 instead of 100. Also, if the chunks are not in the original candidates, they should not be count in reranking metrics. generate same metric.
+
+Evaluate generation
+2 phase: 
+human supervised data collection(where financial expert would use the historical year memo as evaluation data). 50+(projected from 5% of 1000 projects we would use annually in the session here: posts/Business Objective/project_mvp_workflow.md) memos are evaluated.
+afterwards, we learned human expert pattern on how to evaluate, then created few-shot llm-as-a-judge auto evaluation methods to collect more data. basically, learn the pattern, provide llm examples on what is  the 5, 3, 1 score critera for each evaluation critera.
+Criteria: 
+1. hallunication whether model made a number, fact that does not exist in chunk.
+2. captured rate: the real important messages that are captured both by human and RAG system.
+3. 
+
+Evaluate Consistency:
+we generated a set of scores based on the 
+
+Self-supervised LLM as a judge. 
 
 
 # reference

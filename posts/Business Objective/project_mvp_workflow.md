@@ -8,9 +8,8 @@ tags: ["RAG", "User Experience", "MVP", "Business Objective", "UI/UX", "Financia
 author: "Haoyang Han"
 ---
 
-**📚 Series Navigation:**  
-← [Architecting TinyRAG: A Production-Ready Financial RAG System](/post/architecting-production-ready-financial-rag-system)  
-→ [Retrieval Strategies in Financial RAG Systems](/post/retrieval-strategies-in-financial-rag)
+**📚 RAG Implementation Series - Article 2 of 9:**  
+[Complete Learning Path](/knowledge/rag) | ← [Previous: Business Case](/post/agentic-rag-for-financial-memo-generation) | **Current: User Journey** → [Next: Ingestion Pipeline](/post/rag-ingestion-pipeline-for-financial-documents)
 
 ## Introduction: Bridging Architecture and User Experience
 
@@ -189,5 +188,9 @@ The journey from architecture to user experience to algorithmic optimization rep
 
 ---
 
-**📚 Continue the Journey:**  
-→ [Retrieval Strategies in Financial RAG Systems: From Dense to Hybrid Approaches](/post/retrieval-strategies-in-financial-rag)
+---
+
+**📚 Continue Your RAG Journey:**  
+← **Previous:** [The USD 156 Million Question: Business Case & ROI](/post/agentic-rag-for-financial-memo-generation)  
+→ **Next:** [Building a Production-Ready, Asynchronous Ingestion Pipeline](/post/rag-ingestion-pipeline-for-financial-documents)  
+📋 **[View Complete Learning Path](/knowledge/rag)** | **Progress: 2/9 Complete** ✅✅

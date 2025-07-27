@@ -8,6 +8,9 @@ tags: ["RAG", "Python", "LlamaIndex", "FastAPI", "MongoDB", "Dramatiq", "Redis",
 author: "Haoyang Han"
 ---
 
+**📚 RAG Implementation Series - Article 6 of 9:**  
+[Complete Learning Path](/knowledge/rag) | ← [Previous: Multi-Model Strategy](/post/architecting-multi-model-rag-for-global-finance) | **Current: System Architecture** → [Next: Retrieval Strategies](/post/retrieval-strategies-in-financial-rag)
+
 ## Introduction: Beyond the Prototype
 
 This post details the architecture and implementation of **TinyRAG**, our robust, scalable financial RAG system designed to meet these stringent requirements. The architectural thesis is built on a foundational principle: <span style="color: #34A853;">***decoupling for scale and reliability***</span>. We will employ a **web-queue-worker** architecture, a pattern proven in countless production systems. This design separates the user-facing API from the intensive background processing. A lightweight FastAPI web service handles incoming requests, while computationally expensive tasks—document parsing, embedding, and indexing—are offloaded to a resilient, horizontally scalable backend powered by Dramatiq and Redis.
@@ -257,8 +260,10 @@ This is just the beginning. Next, we'll see how this robust architecture transla
 
 ---
 
-**📚 Continue the Journey:**  
-→ [TinyRAG User Journey: From Login to AI-Powered Insights](/post/tinyrag-user-journey-mvp-workflow)
+**📚 Continue Your RAG Journey:**  
+← **Previous:** [Architecting Cross-Model Consistency: Model Selection & Prompt Engineering](/post/architecting-multi-model-rag-for-global-finance)  
+→ **Next:** [Retrieval Strategies in Financial RAG Systems: From Dense to Hybrid Approaches](/post/retrieval-strategies-in-financial-rag)  
+📋 **[View Complete Learning Path](/knowledge/rag)** | **Progress: 6/9 Complete** ✅✅✅✅✅✅
 
 ---
 ### Sourcing and Further Reading

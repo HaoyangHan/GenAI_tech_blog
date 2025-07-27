@@ -14,8 +14,8 @@ author: "Haoyang Han"
 
 
 
-**📚 Previous Article in Series:**  
-← [TinyRAG Ingestion Deep Dive: Your Questions Answered](/post/tinyrag-engineering-deep-dive-qa)
+**📚 RAG Implementation Series - Article 5 of 9:**  
+[Complete Learning Path](/knowledge/rag) | ← [Previous: Engineering Q&A](/post/tinyrag-engineering-deep-dive-qa) | **Current: Multi-Model Strategy** → [Next: System Architecture](/post/architecting-production-ready-financial-rag-system)
 
 This article would introduce some key methods implemented to improve prompt efficiency.
 
@@ -717,6 +717,13 @@ The second pillar is a **unified, database-driven prompting framework**. By abst
 The third and final pillar is a **continuous, automated evaluation pipeline**. Grounded in the LLM-as-a-Judge paradigm and the RAG Triad metrics of context relevance, groundedness, and answer relevance, this assurance framework provides the necessary tools to empirically verify system quality. It allows for the objective, scalable comparison of different `model + prompt` combinations, ensuring that all variants of the system meet a single, high standard of factual accuracy and user utility. This is complemented by a meta-prompting strategy that formalizes the art of prompt engineering, enabling the systematic refinement and improvement of the system's core instructional components.
 
 Ultimately, this architecture is not merely a design for a financial chatbot or a report generator. It is a blueprint for a resilient, intelligent, and governable AI ecosystem. It provides the consistency, control, and verifiability necessary to confidently deploy the transformative power of large language models within the high-stakes, zero-tolerance-for-error environment of the global financial services industry.
+
+---
+
+**📚 Continue Your RAG Journey:**  
+← **Previous:** [TinyRAG Ingestion Deep Dive: Your Questions Answered](/post/tinyrag-engineering-deep-dive-qa)  
+→ **Next:** [Architecting TinyRAG: A Production-Ready Financial RAG System](/post/architecting-production-ready-financial-rag-system)  
+📋 **[View Complete Learning Path](/knowledge/rag)** | **Progress: 5/9 Complete** ✅✅✅✅✅
 
 -----
 

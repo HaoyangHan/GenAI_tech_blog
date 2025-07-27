@@ -8,6 +8,9 @@ tags: ["RAG", "Agentic AI", "GenAI", "Business Objective", "ROI", "Financial AI"
 author: "Haoyang Han"
 ---
 
+**📚 RAG Implementation Series - Article 1 of 9:**  
+[Complete Learning Path](/knowledge/rag) | **Current: Business Case & ROI** → [Next: User Journey](/post/tinyrag-user-journey-mvp-workflow)
+
 ## Introduction
 
 In the world of high-finance, the speed and quality of an investment memo can be the deciding factor in a multi-million dollar decision. These memos—internal reports that determine whether to buy, hold, or sell a company's stock—are the lifeblood of investment strategy. Traditionally, their creation is a grueling, manual process where a team of analysts spends weeks wading through a sea of data: 10-K and 10-Q filings, competitor credit reports, investor relations transcripts, and historical internal opinions. The process is _slow_, _expensive_, and prone to _missing subtle, yet critical, connections_ within the data.
@@ -136,8 +139,12 @@ We have established the "why." The potential ROI is clear and compelling. Now, t
 
 ---
 
-**📚 Next Article in Series:**  
-→ [Building a Production-Ready, Asynchronous Ingestion Pipeline](/post/rag-ingestion-pipeline-for-financial-documents)
+---
+
+**📚 Continue Your RAG Journey:**  
+← **Previous:** None (Starting Point)  
+→ **Next:** [TinyRAG User Journey: From Login to AI-Powered Insights](/post/tinyrag-user-journey-mvp-workflow)  
+📋 **[View Complete Learning Path](/knowledge/rag)** | **Progress: 1/9 Complete** ✅
 
 ### Sourcing and Further Reading
 
