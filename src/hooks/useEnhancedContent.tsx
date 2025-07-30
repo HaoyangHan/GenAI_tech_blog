@@ -60,7 +60,7 @@ export function useEnhancedContent(htmlContent: string) {
       
       // Create React root and render the copy button
       const root = createRoot(buttonContainer);
-      root.render(<CopyButton text={code} size={14} />);
+      root.render(<CopyButton text={code} size={14} contentType="code" />);
       
       block.appendChild(buttonContainer);
     });
@@ -122,7 +122,7 @@ export function useEnhancedContent(htmlContent: string) {
       // Create React root and render the copy button
       const root = createRoot(buttonContainer);
       const latex = text.startsWith('$') ? text : `$${text}$`; // Ensure LaTeX delimiters
-      root.render(<CopyButton text={latex} size={12} className="relative" />);
+      root.render(<CopyButton text={latex} size={12} className="relative" contentType="math" />);
     });
 
     // Cleanup function to unmount React components

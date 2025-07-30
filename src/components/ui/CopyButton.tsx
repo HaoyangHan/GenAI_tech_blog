@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
 import { Copy, Check } from 'lucide-react';
+import { trackBlogEvent } from '@/lib/analytics';
 
 interface CopyButtonProps {
   text: string;
   className?: string;
   size?: number;
+  contentType?: 'code' | 'math' | 'text';
+  language?: string;
 }
 
-export default function CopyButton({ text, className = '', size = 16 }: CopyButtonProps) {
+export default function CopyButton({ 
+  text, 
+  className = '', 
+  size = 16, 
+  contentType = 'text',
+  language = 'unknown'
+}: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -15,6 +24,13 @@ export default function CopyButton({ text, className = '', size = 16 }: CopyButt
       await navigator.clipboard.writeText(text);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+      
+      // Track analytics event
+      if (contentType === 'code') {
+        trackBlogEvent.copyCode(language);
+      } else if (contentType === 'math') {
+        trackBlogEvent.copyMath();
+      }
     } catch (err) {
       console.error('Failed to copy text: ', err);
     }
