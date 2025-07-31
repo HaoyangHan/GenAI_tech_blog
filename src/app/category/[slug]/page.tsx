@@ -6,6 +6,7 @@ import Header from '@/components/layout/Header';
 import BlogPostCard from '@/components/ui/BlogPostCard';
 import { BlogPost, BlogCategory, BLOG_CATEGORIES } from '@/types';
 import { ClientBlogService } from '@/lib/client-blog-service';
+import { slugToCategory, categoryToSlug } from '@/lib/utils';
 import { Tag, BookOpen, Filter } from 'lucide-react';
 
 interface CategoryPageProps {
@@ -19,11 +20,8 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Convert slug to category name
-  const categoryName = decodeURIComponent(params.slug)
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+  // Convert slug to category name with proper handling of acronyms
+  const categoryName = slugToCategory(params.slug);
 
   // Validate if it's a valid category
   const isValidCategory = BLOG_CATEGORIES.includes(categoryName as BlogCategory);
@@ -158,7 +156,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             {BLOG_CATEGORIES.filter(cat => cat !== 'All' && cat !== categoryName).map((category) => (
               <a
                 key={category}
-                href={`/category/${category.toLowerCase().replace(/\s+/g, '-')}`}
+                href={`/category/${categoryToSlug(category)}`}
                 className="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors text-center"
               >
                 <div className="text-sm font-medium text-gray-900">{category}</div>

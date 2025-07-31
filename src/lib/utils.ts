@@ -55,4 +55,28 @@ export function extractSummary(content: string, maxLength: number = 150): string
   }
 
   return text.substring(0, maxLength).trim() + '...';
+}
+
+/**
+ * Convert a category name to a URL-safe slug
+ */
+export function categoryToSlug(categoryName: string): string {
+  return categoryName.toLowerCase().replace(/\s+/g, '-');
+}
+
+/**
+ * Convert a URL slug back to a category name with proper acronym handling
+ */
+export function slugToCategory(slug: string): string {
+  return decodeURIComponent(slug)
+    .split('-')
+    .map(word => {
+      // Handle common acronyms
+      const upperWord = word.toUpperCase();
+      if (['LLM', 'RAG', 'AI', 'ML', 'NLP', 'API', 'UI', 'UX'].includes(upperWord)) {
+        return upperWord;
+      }
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(' ');
 } 

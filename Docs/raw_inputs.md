@@ -388,14 +388,31 @@ Evaluate generation
 human supervised data collection(where financial expert would use the historical year memo as evaluation data). 50+(projected from 5% of 1000 projects we would use annually in the session here: posts/Business Objective/project_mvp_workflow.md) memos are evaluated.
 afterwards, we learned human expert pattern on how to evaluate, then created few-shot llm-as-a-judge auto evaluation methods to collect more data. basically, learn the pattern, provide llm examples on what is  the 5, 3, 1 score critera for each evaluation critera.
 Criteria: 
-1. hallunication whether model made a number, fact that does not exist in chunk.
+1. hallunication: whether model made a number, fact that does not exist in chunk.
 2. captured rate: the real important messages that are captured both by human and RAG system.
-3. 
+3. value add: the important fact RAG captured but human didn't
+4. missing out: the important fact human captured but RAG didn't
+5. confidence level: detect the confidence level of each part of the generation. if it's low or medium, give human a hint. this is the extension of hallunication.
 
 Evaluate Consistency:
-we generated a set of scores based on the 
 
-Self-supervised LLM as a judge. 
+we generated a set of scores based on the model selection. for one memo generation, different model should have aligned performance cross multiple metrics. we have gemini, openai, open source solution, and their metrics should be aligned.
+
+* **OpenAI (GPT & o-series):** This family represents the established benchmark for high-quality, general-purpose language and reasoning models. The `GPT-4.1` series (`nano`, `mini`, and the full model) offers significant improvements over its predecessors in coding, instruction following, and long-context comprehension, all while supporting a 1 million token context window.[6, 7] The `o-series`, particularly `o1-mini`, is specialized for complex reasoning tasks, excelling in STEM and programming challenges where it allocates more computational "thought" to derive solutions.[8, 9] This makes the OpenAI family a reliable, high-quality baseline for a wide range of tasks, from high-throughput classification to deep analytical report generation. Their global availability and mature API ecosystem further solidify their role as a foundational component of a multi-provider strategy.[10, 11]
+
+  * **Google (Gemini):** The Gemini family, particularly models like `Gemini 2.5 Pro`, is distinguished by its frontier-level multimodal capabilities and an exceptionally large context window, capable of processing entire books or extensive codebases in a single pass.[12] This makes it uniquely suited for tasks involving the deep analysis of mixed-media financial reports, video earnings calls, or complex visual data. However, its utility within a global financial institution is critically hampered by significant geographical availability restrictions. As of early 2025, access to certain Gemini models and features via Vertex AI remains limited, with a primary focus on the North American market and potential deprecation for new projects in other regions.[13, 14]
+
+  * **Open-Source (Llama, Pixtral):** The open-source ecosystem, led by models from Meta and Mistral AI, represents a strategic imperative for any organization seeking to mitigate vendor lock-in, enhance data privacy, and gain granular control over its AI stack. These models are not merely "free" alternatives but are increasingly competitive and architecturally innovative. Meta's `Llama 4 Scout` employs a Mixture-of-Experts (MoE) architecture, which allows for highly efficient inference on a very large model by activating only a subset of its parameters for any given task.[15, 16] Mistral AI's `Pixtral-Large-Instruct-2411` is a natively multimodal model demonstrating state-of-the-art performance on document understanding benchmarks like `DocVQA`.[17, 18, 19] Deploying these models on internal infrastructure provides complete control over data flow and allows for deep customization and fine-tuning on proprietary financial data, offering a powerful complement to commercial APIs.
+
+
+Creat another session for agentic post processing.
+llama index as example.
+Give example after we have llm-as-a-judge-score, how to do agentic post processing.
+Bacially everything in ingestion, retrieval, and generation is the traditional rag. After we get the evaluation, LLM would be able to determine state to do based on score.
+If score is low for one element generation(we have 12 sections, which is 12 components, or segmentations of memo generation), we can use different method to diagnosis and improve the generation(do regeneration). for example, we can use the prompt fusion, or re-writing, or expand the chunk reranking number, or use more powerful model like openai's o3. for re-generation and re-evaluation.
+If the score is medium, we can involve human in the loop, to let our slack or discord bot send message to human indicating whether this memo is good or not.
+If the score is high, we can do post processing, like aggregate the segmentations into full report in docx and pdf, send via email, convert to slides and html.
+
 
 
 # reference

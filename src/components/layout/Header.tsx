@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Upload, ChevronDown, User } from 'lucide-react';
 import { BLOG_CATEGORIES } from '@/types';
+import { categoryToSlug } from '@/lib/utils';
 
 export default function Header() {
   const [showCategories, setShowCategories] = useState(false);
@@ -46,7 +47,7 @@ export default function Header() {
                   {validCategories.map((category) => (
                     <Link
                       key={category}
-                      href={`/category/${category.toLowerCase().replace(/\s+/g, '-')}`}
+                      href={`/category/${categoryToSlug(category)}`}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900"
                       onClick={() => setShowCategories(false)}
                     >
